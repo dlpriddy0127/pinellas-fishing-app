@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinellas Fishing Forecaster</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+    <style>
+        /* Base Variables and Reset */
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --score-good: #48bb78;
+            --score-fair: #ecc94b;
+            --score-poor: #e53e3e;
+            --border-radius: 12px;
+            --accent-blue: #3182ce;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #1a365d;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- FORECAST TIME-TRAVEL PILLS --- */
+        .forecast-pills-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .forecast-pills-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .forecast-pills-container::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        .forecast-pill {
+            background: var(--bg-color);
+            border: 1px solid #e2e8f0;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .forecast-pill:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .forecast-pill.active-forecast {
+            background: #ebf8ff;
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* --- SCORE CARDS --- */
+        .hero-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .hero-info h2 { font-size: 1.5rem; margin-bottom: 8px; }
+        .hero-notes { color: var(--text-muted); font-size: 1rem; margin-bottom: 16px; line-height: 1.4; }
+        .metrics-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+        
+        .metric {
+            background: var(--bg-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .score-display { text-align: center; }
+        
+        .score-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: background-color 0.5s ease;
+        }
+
+        .good { background-color: var(--score-good); }
+        .fair { background-color: var(--score-fair); }
+        .poor { background-color: var(--score-poor); }
+
+        .secondary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .card-header h3 { font-size: 1.1rem; }
+        
+        .mini-score {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.5s ease;
+        }
+
+        .card-notes { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; flex-grow: 1; line-height: 1.3; }
+        
+        .card-metrics {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border-top: 1px solid #edf2f7;
+            padding-top: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* --- REGIONAL OVERVIEW SECTION --- */
+        .regional-section {
+            border-top: 2px solid #e2e8f0;
+            padding-top: 32px;
+        }
+
+        .regional-header {
+            font-size: 1.3rem;
+            color: #1a365d;
+            margin-bottom: 20px;
+        }
+
+        .regional-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .context-panel {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .context-panel h3 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Info Buttons and Panels */
+        .info-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0 4px;
+            transition: color 0.3s ease;
+            outline: none;
+        }
+
+        .info-btn:hover {
+            color: var(--accent-blue);
+        }
+
+        .info-panel {
+            display: none;
+            background-color: var(--bg-color);
+            border-left: 3px solid var(--accent-blue);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .info-panel h4 {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #1a365d;
+        }
+
+        .info-panel ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .info-panel li {
+            margin-bottom: 6px;
+        }
+
+        .info-panel strong {
+            color: var(--accent-blue);
+        }
+
+        .rain-stat {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-blue);
+        }
+
+        .rain-subtext {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Dynamic Visual Warning Gauge styles for Runoff */
+        .runoff-gauge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        /* Synchronized Wind Timeline Grid */
+        .wind-timeline {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            padding-bottom: 12px;
+            width: 100%;
+        }
+
+        .wind-hour {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-color);
+            padding: 12px 4px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .wind-time { color: var(--text-muted); margin-bottom: 8px; font-weight: 600; font-size: 0.75rem; white-space: nowrap; }
+        .wind-speed { font-weight: bold; margin-top: 8px; font-size: 0.85rem; white-space: nowrap; }
+        .wind-scale { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; line-height: 1.2; }
+        
+        .arrow {
+            font-size: 1.3rem;
+            display: inline-block;
+            color: var(--accent-blue);
+            line-height: 1;
+        }
+
+        .dir-N  { transform: rotate(0deg); }
+        .dir-NE { transform: rotate(45deg); }
+        .dir-E  { transform: rotate(90deg); }
+        .dir-SE { transform: rotate(135deg); }
+        .dir-S  { transform: rotate(180deg); }
+        .dir-SW { transform: rotate(225deg); }
+        .dir-W  { transform: rotate(270deg); }
+        .dir-NW { transform: rotate(315deg); }
+
+        .tide-chart-container {
+            width: 100%;
+            height: 260px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 12px;
+            position: relative;
+        }
+
+        .timestamp-footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* --- JOURNAL LOG PANEL --- */
+        #journal-log-panel {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+            border-top: 3px solid var(--accent-blue);
+        }
+        .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .log-header h2 { font-size: 1.3rem; color: var(--text-main); }
+        .history-toggle { background: none; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 12px; cursor: pointer; color: var(--text-muted); font-size: 0.9rem; transition: all 0.2s; }
+        .history-toggle:hover { background: #f7fafc; color: var(--accent-blue); }
+        .time-pill-container { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 12px; margin-bottom: 16px; scrollbar-width: none; }
+        .time-pill-container::-webkit-scrollbar { display: none; }
+        .time-pill { padding: 8px 16px; background: var(--bg-color); border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+        .time-pill.active { background: var(--accent-blue); color: white; }
+        .action-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; background: var(--bg-color); padding: 12px; border-radius: 8px; }
+        .location-select { padding: 8px 12px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 0.95rem; color: var(--text-main); outline: none; background: white; }
+        .success-buttons { display: flex; gap: 8px; }
+        .success-btn { border: none; padding: 8px 12px; border-radius: 6px; font-size: 0.95rem; cursor: pointer; background: white; border: 1px solid #e2e8f0; transition: transform 0.1s, box-shadow 0.2s; }
+        .success-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        #journal-history-drawer { display: none; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+        .history-item { padding: 12px; background: var(--bg-color); border-radius: 6px; margin-bottom: 8px; font-size: 0.85rem; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+        .insight-panel { background: #ebf8ff; border-left: 4px solid var(--accent-blue); padding: 12px; border-radius: 4px; margin-bottom: 16px; font-size: 0.9rem; color: #2b6cb0; }
+
+        @media (max-width: 768px) {
+            .wind-timeline { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .hero-card { grid-template-columns: 1fr; text-align: center; }
+            .metrics-grid { justify-content: center; }
+            .score-display { order: -1; margin-bottom: 10px; }
+            .score-circle { margin: 0 auto; }
+            .action-bar { flex-direction: column; align-items: stretch; } 
+            .success-buttons { justify-content: space-between; flex-wrap: wrap; } 
+            .success-btn { flex: 1 1 calc(50% - 8px); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Inshore Forecaster</h1>
+    </header>
+
+    <main>
+        
+        <div class="forecast-pills-wrapper">
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Forecast Time:</span>
+            <div class="forecast-pills-container" id="forecast-pills-container"></div>
+        </div>
+
+        <section class="hero-card" id="card-gandy">
+            <div class="hero-info">
+                <h2>Gandy Causeway Channels</h2>
+                <p class="hero-notes" id="gandy-notes">Analyzing channel current and causeway flow...</p>
+                <div class="metrics-grid">
+                    <div class="metric"><span>💨</span> <span id="gandy-wind">-- mph</span></div>
+                    <div class="metric"><span>🌊</span> <span id="gandy-tide">Tide Syncing...</span></div>
+                    <div class="metric"><span>🌡️</span> <span id="gandy-watertemp">--°F</span></div>
+                </div>
+            </div>
+            <div class="score-display">
+                <div class="score-circle fair" id="gandy-score">--</div>
+            </div>
+        </section>
+
+        <section class="secondary-grid">
+            <div class="card" id="card-skyway">
+                <div class="card-header">
+                    <h3>Sunshine Skyway Pier</h3>
+                    <div class="mini-score fair" id="skyway-score">--</div>
+                </div>
+                <p class="card-notes" id="skyway-notes">Analyzing main channel velocity...</p>
+                <div class="card-metrics">
+                    <span id="skyway-wind">-- mph</span>
+                    <span id="skyway-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="skyway-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-johnspass">
+                <div class="card-header">
+                    <h3>John's Pass</h3>
+                    <div class="mini-score fair" id="johnspass-score">--</div>
+                </div>
+                <p class="card-notes" id="johnspass-notes">Analyzing pass flow...</p>
+                <div class="card-metrics">
+                    <span id="johnspass-wind">-- mph</span>
+                    <span id="johnspass-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="johnspass-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-desoto-gulf">
+                <div class="card-header">
+                    <h3>De Soto Gulf Pier</h3>
+                    <div class="mini-score fair" id="desotogulf-score">--</div>
+                </div>
+                <p class="card-notes" id="desotogulf-notes">Analyzing Gulf flushing...</p>
+                <div class="card-metrics">
+                    <span id="desotogulf-wind">-- mph</span>
+                    <span id="desotogulf-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="desotogulf-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-desoto-bay">
+                <div class="card-header">
+                    <h3>De Soto Bay Pier</h3>
+                    <div class="mini-score fair" id="desotobay-score">--</div>
+                </div>
+                <p class="card-notes" id="desotobay-notes">Analyzing bay shore protection...</p>
+                <div class="card-metrics">
+                    <span id="desotobay-wind">-- mph</span>
+                    <span id="desotobay-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="desotobay-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-desoto-beach">
+                <div class="card-header">
+                    <h3>De Soto North Beach</h3>
+                    <div class="mini-score fair" id="desotobeach-score">--</div>
+                </div>
+                <p class="card-notes" id="desotobeach-notes">Analyzing surf troughs...</p>
+                <div class="card-metrics">
+                    <span id="desotobeach-wind">-- mph</span>
+                    <span id="desotobeach-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="desotobeach-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-desoto-flats">
+                <div class="card-header">
+                    <h3>De Soto East Flats</h3>
+                    <div class="mini-score fair" id="desotoflats-score">--</div>
+                </div>
+                <p class="card-notes" id="desotoflats-notes">Analyzing grass flat drains...</p>
+                <div class="card-metrics">
+                    <span id="desotoflats-wind">-- mph</span>
+                    <span id="desotoflats-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="desotoflats-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-honeymoon">
+                <div class="card-header">
+                    <h3>Honeymoon North Beach</h3>
+                    <div class="mini-score fair" id="honeymoon-score">--</div>
+                </div>
+                <p class="card-notes" id="honeymoon-notes">Analyzing surf geometry...</p>
+                <div class="card-metrics">
+                    <span id="honeymoon-wind">-- mph</span>
+                    <span id="honeymoon-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="honeymoon-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-honeymoon-bay">
+                <div class="card-header">
+                    <h3>Honeymoon Bay Side</h3>
+                    <div class="mini-score fair" id="honeymoonbay-score">--</div>
+                </div>
+                <p class="card-notes" id="honeymoonbay-notes">Analyzing mangrove flood levels...</p>
+                <div class="card-metrics">
+                    <span id="honeymoonbay-wind">-- mph</span>
+                    <span id="honeymoonbay-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="honeymoonbay-watertemp">--°F</span></span>
+                </div>
+            </div>
+
+            <div class="card" id="card-honeymoon-south">
+                <div class="card-header">
+                    <h3>Honeymoon South Side</h3>
+                    <div class="mini-score fair" id="honeymoonsouth-score">--</div>
+                </div>
+                <p class="card-notes" id="honeymoonsouth-notes">Analyzing Hurricane Pass currents...</p>
+                <div class="card-metrics">
+                    <span id="honeymoonsouth-wind">-- mph</span>
+                    <span id="honeymoonsouth-tide">Syncing</span>
+                    <span style="font-weight:normal; color:var(--text-muted);">🌡️ <span id="honeymoonsouth-watertemp">--°F</span></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="journal-log-panel">
+            <div class="log-header">
+                <h2>📝 Field Journal</h2>
+                <button class="history-toggle" onclick="toggleHistoryDrawer()">📈 Review Log History</button>
+            </div>
+            
+            <div class="time-pill-container" id="time-pill-scroll"></div>
+
+            <div class="action-bar">
+                <select class="location-select" id="log-location">
+                    <option value="Gandy Causeway Channels">Gandy Causeway Channels</option>
+                    <option value="Sunshine Skyway Pier">Sunshine Skyway Pier</option>
+                    <option value="John's Pass">John's Pass</option>
+                    <option value="De Soto Gulf Pier">De Soto Gulf Pier</option>
+                    <option value="De Soto Bay Pier">De Soto Bay Pier</option>
+                    <option value="De Soto North Beach">De Soto North Beach</option>
+                    <option value="De Soto East Flats">De Soto East Flats</option>
+                    <option value="Honeymoon North Beach">Honeymoon North Beach</option>
+                    <option value="Honeymoon Bay Side">Honeymoon Bay Side</option>
+                    <option value="Honeymoon South Side">Honeymoon South Side</option>
+                </select>
+                <div class="success-buttons">
+                    <button class="success-btn" onclick="submitLog('❌ Skunked')">❌ Skunked</button>
+                    <button class="success-btn" onclick="submitLog('⏳ Slow')">⏳ Slow</button>
+                    <button class="success-btn" onclick="submitLog('🐟 Productive')">🐟 Productive</button>
+                    <button class="success-btn" onclick="submitLog('🔥 Epic')">🔥 Epic</button>
+                </div>
+            </div>
+
+            <div id="journal-history-drawer">
+                <div class="insight-panel">
+                    <strong>Insight Engine:</strong> <span id="dynamic-insight">Log more trips to generate pattern insights based on wind and tide data.</span>
+                </div>
+                <div id="history-feed"></div>
+            </div>
+        </section>
+
+        <section class="regional-section">
+            <h2 class="regional-header">Regional Overview</h2>
+            <div class="regional-grid">
+                
+                <div class="context-panel">
+                    <h3>🌊 24-Hour Tide Cycle (St. Pete)</h3>
+                    <div class="tide-chart-container" id="tide-chart-target">
+                        <canvas id="tideChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="context-panel">
+                    <h3>
+                        🌧️ Past 24h Rainfall & Runoff Guide 
+                        <button class="info-btn" onclick="toggleInfo('runoff-info')" title="Information on Runoff Index">ⓘ</button>
+                    </h3>
+                    
+                    <div id="runoff-info" class="info-panel">
+                        <h4>Runoff Impact Index Matrix</h4>
+                        <p style="margin-bottom: 8px;">Rain totals translate directly into water clarity degradation and rapid salinity drops on shallow flats. The new warning gauge dynamically calculates and interprets raw precipitation figures:</p>
+                        <ul>
+                            <li><strong>0.00" – 0.10" (Minimal Risk):</strong> Pristine, clear water columns. Stable backcountry salinity.</li>
+                            <li><strong>0.11" – 0.49" (Minor Runoff):</strong> Minimal impact. Temporary localized stain near immediate creek mouth discharges; open grass flats remain optimal.</li>
+                            <li><strong>0.50" – 1.24" (Moderate Runoff):</strong> Stained/tannic water encroachment. Salinity drops force sensitive species (like trout) to abandon shallow bays for deeper drop-offs.</li>
+                            <li><strong>1.25"+ (Severe Runoff):</strong> Churned, brown visibility matrix. Heavy stormwater discharge blocks light penetration. Avoid the inner flats entirely; target high-flushing ocean passes.</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <span class="rain-stat" id="rain-total">0.00"</span>
+                        <span id="rain-gauge-badge" class="runoff-gauge fair" style="background-color: var(--text-muted);">Syncing</span>
+                        <span class="rain-subtext" id="rain-gauge-desc">Connecting to telemetry...</span>
+                    </div>
+
+                    <h3>
+                        💨 24-Hour Wind Forecast 
+                        <button class="info-btn" onclick="toggleInfo('wind-info')" title="Information on Wind Scale">ⓘ</button>
+                    </h3>
+                    
+                    <div id="wind-info" class="info-panel">
+                        <h4>Angling Wind Scale Matrix</h4>
+                        <p style="margin-bottom: 8px;">Wind dynamics drastically change casting mechanics, water presentation, and fish comfort zones. The engine now tags wind streams globally using these four targeted boundaries:</p>
+                        <ul>
+                            <li><strong>0 – 3 mph (Still):</strong> Grease calm. Water surface behaves like a mirror. High visibility makes shallow-water fish highly skittish; stealth is required, or target deeper zones.</li>
+                            <li><strong>4 – 10 mph (Light):</strong> The Ideal Ripple. Breaks up the fish’s visual window to mask your profile while maintaining perfect boat control and effortless casting.</li>
+                            <li><strong>11 – 16 mph (Moderate):</strong> Active Chop. Demands heavier jigs or weedless configurations. Concentrates predator ambush points along windward shoreline points.</li>
+                            <li><strong>17+ mph (Unpleasantly Strong):</strong> Blown Out. Destroys visibility due to muddy substrate churning, causes severe drift vectors, and presents small-craft safety hazards.</li>
+                        </ul>
+                    </div>
+
+                    <div class="wind-timeline" id="wind-timeline-container">
+                        <p style="color:var(--text-muted); font-size:0.85rem; padding: 10px;">Connecting to weather telemetry...</p>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">
+                        ☁️ 24-Hour Cloud Cover
+                    </h3>
+                    <div class="wind-timeline" id="cloud-timeline-container">
+                        <p style="color:var(--text-muted); font-size:0.85rem; padding: 10px;">Connecting to weather telemetry...</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="timestamp-footer" id="live-timestamp">
+                Initializing engine...
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const LOGGING_CONFIG = {
+            googleSheetWebhookUrl: "https://script.google.com/macros/s/AKfycbxA95JzMrOqe0FKSeQZGPGj2zE1SKiW9QIYD8OG7VZdm8FiwzYal01g-R6h80Wu7dwa/exec",
+            syncIntervalMs: 30000 
+        };
+
+        let currentTideState = "Syncing";
+        
+        let telemetryCache = { 
+            windSpeed: 0, 
+            windDirection: "N", 
+            waterTemp: {
+                '8726520': '--', // St. Pete
+                '8726724': '--', // Clearwater Beach
+                '8726384': '--'  // Port Manatee
+            } 
+        };
+
+        const locationStations = {
+            'gandy': '8726520',
+            'skyway': '8726384',
+            'johnspass': '8726724',
+            'desotogulf': '8726384',
+            'desotobay': '8726384',
+            'desotobeach': '8726384',
+            'desotoflats': '8726384',
+            'honeymoon': '8726724',
+            'honeymoonbay': '8726724',
+            'honeymoonsouth': '8726724'
+        };
+
+        let activeForecastTimeMs = null;
+        let cachedTidePredictions = [];
+        let cachedWindPeriods = [];
+        let nowTickIndex = -1;  
+        let cachedRainfall24h = 0;
+      
+      const SITE_LAT = 27.76;
+const SITE_LON = -82.64;
+
+function getDielCycle(targetTimeMs) {
+    const date = new Date(targetTimeMs);
+    const times = SunCalc.getTimes(date, SITE_LAT, SITE_LON);
+    const window = 45 * 60 * 1000;
+
+    const dawnStart  = times.dawn.getTime();
+    const dawnEnd    = times.sunrise.getTime() + window;
+    const duskStart  = times.sunset.getTime() - window;
+    const duskEnd    = times.dusk.getTime();
+
+    if (targetTimeMs >= dawnStart  && targetTimeMs < dawnEnd)  return "Dawn";
+    if (targetTimeMs >= duskStart  && targetTimeMs < duskEnd)  return "Dusk";
+    if (targetTimeMs >= dawnEnd    && targetTimeMs < duskStart) return "Day";
+    return "Night";
+}
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const NOAA_STATION = "8726520"; 
+            const NWS_FORECAST_URL = "https://api.weather.gov/gridpoints/TBW/80,72/forecast/hourly";
+
+              fetchTideData(NOAA_STATION);
+              fetchWaterTemps();
+              fetchWeatherData(NWS_FORECAST_URL);
+              fetchRainfallFromNWSObservations();
+
+            setTimeout(initJournalLog, 500); 
+        });
+      
+      async function fetchRainfallFromNWSObservations() {
+    const rainEl     = document.getElementById('rain-total');
+    const gaugeBadge = document.getElementById('rain-gauge-badge');
+    const gaugeDesc  = document.getElementById('rain-gauge-desc');
+
+    try {
+        const url = `https://api.weather.gov/stations/KSPG/observations?limit=25`;
+        const response = await fetch(url, { headers: { 'Accept': 'application/geo+json' } });
+        if (!response.ok) throw new Error(`NWS observations failed: ${response.status}`);
+
+        const data = await response.json();
+        const features = data.features; // Sorted newest-first
+
+        const nowMs    = Date.now();
+        const cutoffMs = nowMs - (24 * 60 * 60 * 1000);
+
+       let totalInches = 0;
+for (const feature of features) {
+    const obsTimeMs = new Date(feature.properties.timestamp).getTime();
+    if (obsTimeMs >= cutoffMs && obsTimeMs <= nowMs) {
+        const val = feature.properties.precipitationLastHour?.value;
+        if (val !== null && val !== undefined && !isNaN(val) && val >= 0) {
+            totalInches += val; // KSPG returns inches despite "wmoUnit:m" label
+        }
+    }
+}
+
+// Sanity cap — 15" in 24h is a catastrophic flood event, not a fishing condition
+totalInches = parseFloat(Math.min(totalInches, 15.0).toFixed(2));
+        cachedRainfall24h = totalInches;
+
+        if (rainEl)     rainEl.textContent = `${totalInches.toFixed(2)}"`;
+        const runoff = getRunoffMetrics(totalInches);
+        if (gaugeBadge) { gaugeBadge.textContent = runoff.label; gaugeBadge.style.backgroundColor = runoff.color; }
+        if (gaugeDesc)  gaugeDesc.textContent = `/ ${runoff.desc}`;
+
+        runForecastingEngine();
+
+    } catch (err) {
+        console.error("NWS rainfall fetch failed:", err);
+        if (rainEl)     rainEl.textContent = `--"`;
+        if (gaugeBadge) { gaugeBadge.textContent = "Data Unavailable"; gaugeBadge.style.backgroundColor = "var(--text-muted)"; }
+        if (gaugeDesc)  gaugeDesc.textContent = "/ Rainfall source offline.";
+    }
+}
+
+        function getTimelineWindow() {
+            const now = new Date();
+            now.setMinutes(0, 0, 0); 
+            const startMs = now.getTime() - (6 * 60 * 60 * 1000);
+            const endMs = startMs + (24 * 60 * 60 * 1000); 
+            return { startMs, endMs };
+        }
+
+        function toggleInfo(panelId) {
+            const panel = document.getElementById(panelId);
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            const timeString = now.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+            document.getElementById('live-timestamp').innerHTML = `<strong>Data Valid As Of:</strong> ${timeString}`;
+        }
+
+        function getWindScaleLabel(speed) {
+            if (speed <= 3) return "Still";
+            if (speed <= 10) return "Light";
+            if (speed <= 16) return "Moderate";
+            return "Unpleasantly Strong";
+        }
+
+        function getRunoffMetrics(inches) {
+            if (inches <= 0.10) {
+                return { label: "Minimal Risk", desc: "Pristine clear waters; stable backcountry salinity.", color: "var(--score-good)" };
+            } else if (inches <= 0.49) {
+                return { label: "Minor Runoff", desc: "Localized stain near creek mouths; open flats optimal.", color: "#3182ce" };
+            } else if (inches <= 1.24) {
+                return { label: "Moderate Runoff", desc: "Stained visibility. Salinity shift forcing fish down contours.", color: "var(--score-fair)" };
+            } else {
+                return { label: "Severe Runoff", desc: "Blown out flats. High tannic sediment mud layers. Target deep ocean passes.", color: "var(--score-poor)" };
+            }
+        }
+
+        async function fetchWaterTemps() {
+            const stations = ['8726520', '8726724', '8726384'];
+            for (const station of stations) {
+                try {
+                    const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station=${station}&product=water_temperature&datum=MLLW&time_zone=lst_ldt&units=english&application=Pinellas_Forecaster&format=json`;
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.data && data.data.length > 0) {
+                            telemetryCache.waterTemp[station] = parseFloat(data.data[0].v).toFixed(1);
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error loading water temperature for station ${station}:`, error);
+                }
+            }
+            updateAllWaterTemps();
+        }
+
+        function updateAllWaterTemps() {
+            Object.keys(locationStations).forEach(prefix => {
+                const station = locationStations[prefix];
+                const tempVal = telemetryCache.waterTemp[station];
+                const tempStr = tempVal !== "--" ? `${tempVal}°F` : "--°F";
+             
+                const el = document.getElementById(`${prefix}-watertemp`);
+                if (el) el.textContent = tempStr;
+            });
+        }
+
+        async function fetchTideData(station) {
+            try {
+                const { startMs, endMs } = getTimelineWindow();
+                const startDay = new Date(startMs);
+                
+                const yyyy = startDay.getFullYear();
+                const mm = String(startDay.getMonth() + 1).padStart(2, '0');
+                const dd = String(startDay.getDate()).padStart(2, '0');
+                const beginDateStr = `${yyyy}${mm}${dd}`;
+
+                const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=${beginDateStr}&range=48&station=${station}&product=predictions&datum=MLLW&time_zone=lst_ldt&units=english&application=Pinellas_Forecaster&format=json`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`NOAA HTTP error status: ${response.status}`);
+                
+                const data = await response.json();
+                if (!data.predictions) throw new Error("Malformed data wrapper returned");
+
+                cachedTidePredictions = data.predictions;
+
+                const labels = [];
+                const tideValues = [];
+                const nowMs = Date.now();
+                let currentWaterLevel = null;
+                let futureWaterLevel = null;
+                let minimumTimeDiff = Infinity;
+                let minNowDiff = Infinity; 
+                data.predictions.forEach(p => {
+                    const normalizedDateStr = p.t.replace(/-/g, "/");
+                    const tickTime = new Date(normalizedDateStr); 
+                    const tickMs = tickTime.getTime();
+                    
+                    const diff = Math.abs(tickMs - nowMs);
+                    if (diff < minimumTimeDiff) {
+                        minimumTimeDiff = diff;
+                        currentWaterLevel = parseFloat(p.v);
+                    }
+
+                    if (tickMs >= startMs && tickMs <= endMs) {
+                        let timeOptions = { hour: 'numeric', hour12: true };
+                        if (tickTime.getHours() === 0 || labels.length === 0) {
+                            timeOptions = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', hour12: true };
+                        }
+                        const nowDiff = Math.abs(tickMs - nowMs);                              
+                        if (nowDiff < minNowDiff) { minNowDiff = nowDiff; nowTickIndex = labels.length; } 
+                        labels.push(tickTime.toLocaleString('en-US', timeOptions));
+                        tideValues.push(parseFloat(p.v).toFixed(2));
+                    }
+                });
+                const targetedFutureMs = nowMs + (90 * 60 * 1000);
+                let futureMinDiff = Infinity;
+                data.predictions.forEach(p => {
+                    const tickMs = new Date(p.t.replace(/-/g, "/")).getTime();
+                    const diff = Math.abs(tickMs - targetedFutureMs);
+                    if (diff < futureMinDiff) {
+                        futureMinDiff = diff;
+                        futureWaterLevel = parseFloat(p.v);
+                    }
+                });
+                if (currentWaterLevel !== null && futureWaterLevel !== null) {
+                    const heightDelta = futureWaterLevel - currentWaterLevel;
+                    if (Math.abs(heightDelta) < 0.12) currentTideState = "Slack";
+                    else if (heightDelta > 0) currentTideState = "Incoming";
+                    else currentTideState = "Outgoing";
+                }
+
+                if (labels.length === 0) throw new Error("Zero active timeline coordinates generated.");
+                renderTideChartWithExtremes(labels, tideValues);
+                runForecastingEngine();
+                updateTimestamp();
+
+            } catch (error) {
+                console.error("Error loading tide dataset:", error);
+            }
+        }
+
+        const tideExtremesPlugin = {
+            id: 'tideExtremes',
+            afterDatasetsDraw(chart) {
+                const { ctx, scales: { x, y } } = chart;
+                ctx.save();
+                ctx.font = 'bold 10px sans-serif';
+                ctx.textAlign = 'center';
+                
+                const dataset = chart.data.datasets[0];
+                const pointLabels = dataset.pointLabels;
+                if (!pointLabels) return;
+                for (let i = 0; i < dataset.data.length; i++) {
+                    const label = pointLabels[i];
+                    if (label) {
+                        const val = dataset.data[i];
+                        const isHigh = label === 'High';
+                        
+                        const pixelX = chart.getDatasetMeta(0).data[i] ? chart.getDatasetMeta(0).data[i].x : x.getPixelForTick(i);
+                        const pixelY = chart.getDatasetMeta(0).data[i] ? chart.getDatasetMeta(0).data[i].y : y.getPixelForValue(val);
+                        
+                        ctx.fillStyle = isHigh ? '#1c6b48' : '#b82323';
+                        const text = `${label} (${val}ft)`;
+                        const yOffset = isHigh ? -12 : 18;
+                        
+                        ctx.fillText(text, pixelX, pixelY + yOffset);
+                    }
+                }
+                if (nowTickIndex >= 0 && chart.getDatasetMeta(0).data[nowTickIndex]) {
+                    const nowX = chart.getDatasetMeta(0).data[nowTickIndex].x;
+                    const chartArea = chart.chartArea;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(nowX, chartArea.top);
+                    ctx.lineTo(nowX, chartArea.bottom);
+                    ctx.strokeStyle = '#38a169';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([]);
+                    ctx.stroke();
+                    ctx.fillStyle = '#38a169';
+                    ctx.font = 'bold 9px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('NOW', nowX, chartArea.top - 4);
+                    ctx.restore();
+                }
+                ctx.restore();
+            }
+        };
+
+        function renderTideChartWithExtremes(labels, dataPoints) {
+            const pointRadii = new Array(dataPoints.length).fill(0);
+            const pointColors = new Array(dataPoints.length).fill('rgba(0,0,0,0)');
+            const pointLabels = new Array(dataPoints.length).fill('');
+
+            const uniquePoints = [];
+            for (let i = 0; i < dataPoints.length; i++) {
+                const val = parseFloat(dataPoints[i]);
+                if (uniquePoints.length === 0 || uniquePoints[uniquePoints.length - 1].val !== val) {
+                    uniquePoints.push({ val: val, idx: i });
+                }
+            }
+
+            let lastHighIdx = -100;
+            let lastLowIdx = -100;
+
+            for (let i = 1; i < uniquePoints.length - 1; i++) {
+                const prev = uniquePoints[i-1].val;
+                const curr = uniquePoints[i].val;
+                const next = uniquePoints[i+1].val;
+                const originalIdx = uniquePoints[i].idx;
+                if (curr > prev && curr > next) {
+                    if (originalIdx - lastHighIdx > 40) { 
+                        pointRadii[originalIdx] = 5;
+                        pointColors[originalIdx] = '#48bb78';
+                        pointLabels[originalIdx] = 'High';
+                        lastHighIdx = originalIdx;
+                    }
+                } else if (curr < prev && curr < next) {
+                    if (originalIdx - lastLowIdx > 40) {
+                        pointRadii[originalIdx] = 5;
+                        pointColors[originalIdx] = '#e53e3e';
+                        pointLabels[originalIdx] = 'Low';
+                        lastLowIdx = originalIdx;
+                    }
+                }
+            }
+
+            const ctx = document.getElementById('tideChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                plugins: [tideExtremesPlugin],
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Water Height (ft)',
+                        data: dataPoints,
+                        borderColor: '#3182ce',
+                        backgroundColor: 'rgba(49, 130, 206, 0.06)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: pointRadii, 
+                        pointBackgroundColor: pointColors, 
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1.5,
+                        pointHitRadius: 12,
+                        pointLabels: pointLabels 
+                    }]
+                },
+                options: {
+                    layout: { padding: { top: 15, bottom: 15, left: 30, right: 20 } },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { 
+                                maxTicksLimit: 9,
+                                maxRotation: 0,
+                                autoSkip: true,
+                                color: '#718096', 
+                                font: { size: 10, weight: '600' } 
+                            }
+                        },
+                        y: {
+                            grid: { color: '#edf2f7', borderDash: [4, 4] },
+                            ticks: { color: '#718096', font: { size: 10 }, callback: function(v) { return Number(v).toFixed(2) + ' ft'; } }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function fetchWeatherData(forecastUrl) {
+            try {
+                const forecastRes = await fetch(forecastUrl);
+                if (forecastRes.ok) {
+                    const forecastData = await forecastRes.json();
+                    const currentPeriod = forecastData.properties.periods[0];
+                    telemetryCache.windSpeed = parseInt(currentPeriod.windSpeed.replace(/[^0-9]/g, '')) || 0;
+                    telemetryCache.windDirection = currentPeriod.windDirection;
+                    
+                    cachedWindPeriods = forecastData.properties.periods;
+                    
+                    renderWindTimeline(forecastData.properties.periods);
+                    renderCloudTimeline(forecastData.properties.periods);
+                    renderForecastPills(); 
+                    runForecastingEngine();
+                    updateTimestamp();
+                }
+            } catch (err) { console.error("Forecast failed:", err); }
+
+            
+        }
+
+        function renderForecastPills() {
+            const container = document.getElementById('forecast-pills-container');
+            if(!container) return;
+            container.innerHTML = '';
+
+            const { startMs } = getTimelineWindow();
+            if (!activeForecastTimeMs) {
+                activeForecastTimeMs = startMs + (6 * 60 * 60 * 1000);
+            }
+
+            for(let i = 0; i <= 21; i += 3) {
+                const targetMs = startMs + (i * 60 * 60 * 1000);
+                const tickTime = new Date(targetMs);
+                
+                let timeStr = tickTime.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+                if (i === 0 || tickTime.getHours() === 0) {
+                    timeStr = tickTime.toLocaleString('en-US', { weekday: 'short', hour: 'numeric', hour12: true });
+                }
+
+                if(targetMs === startMs + (6 * 60 * 60 * 1000)) {
+                    timeStr = "Now";
+                }
+
+                const pill = document.createElement('div');
+                pill.className = `forecast-pill ${targetMs === activeForecastTimeMs ? 'active-forecast' : ''}`;
+                pill.textContent = timeStr;
+                pill.onclick = () => {
+                    activeForecastTimeMs = targetMs;
+                    document.querySelectorAll('.forecast-pill').forEach(p => p.classList.remove('active-forecast'));
+                    pill.classList.add('active-forecast');
+                    
+                    runForecastingEngine();
+                };
+
+                container.appendChild(pill);
+            }
+        }
+
+        function renderWindTimeline(periods) {
+            const container = document.getElementById('wind-timeline-container');
+            container.innerHTML = ''; 
+            
+            const { startMs } = getTimelineWindow();
+
+            for(let i = 0; i <= 21; i += 3) {
+                const targetMs = startMs + (i * 60 * 60 * 1000);
+                let closestPeriod = periods[0];
+                let minDiff = Infinity;
+                periods.forEach(p => {
+                    const pTime = new Date(p.startTime).getTime();
+                    const diff = Math.abs(pTime - targetMs);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestPeriod = p;
+                    }
+                });
+                const hourDiv = document.createElement('div');
+                hourDiv.className = 'wind-hour';
+                
+                const tickTime = new Date(targetMs);
+                let timeStr = tickTime.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+                if (i === 0 || tickTime.getHours() === 0) {
+                    timeStr = tickTime.toLocaleString('en-US', { weekday: 'short', hour: 'numeric', hour12: true });
+                }
+
+                const speed = parseInt(closestPeriod.windSpeed.replace(/[^0-9]/g, '')) || 0;
+                const d = closestPeriod.windDirection; 
+                
+                const scaleString = getWindScaleLabel(speed);
+                let cssDirClass = 'dir-N';
+                if (['N','NNE','NNW'].includes(d)) cssDirClass = 'dir-N';
+                else if (['NE','ENE'].includes(d)) cssDirClass = 'dir-NE';
+                else if (['E','ESE'].includes(d)) cssDirClass = 'dir-E';
+                else if (['SE','SSE'].includes(d)) cssDirClass = 'dir-SE';
+                else if (['S','SSW'].includes(d)) cssDirClass = 'dir-S';
+                else if (['SW','WSW'].includes(d)) cssDirClass = 'dir-SW';
+                else if (['W','WNW'].includes(d)) cssDirClass = 'dir-W';
+                else if (['NW','NNW'].includes(d)) cssDirClass = 'dir-NW';
+
+                hourDiv.innerHTML = `
+                    <span class="wind-time">${timeStr}</span>
+                    <span class="arrow ${cssDirClass}">⬇</span>
+                    <span class="wind-speed">${speed} mph</span>
+                    <span class="wind-scale">${scaleString}</span>
+                `;
+                container.appendChild(hourDiv);
+            }
+        }
+
+        function renderCloudTimeline(periods) {
+            const container = document.getElementById('cloud-timeline-container');
+            if(!container) return;
+            container.innerHTML = ''; 
+            
+            const { startMs } = getTimelineWindow();
+            for(let i = 0; i <= 21; i += 3) {
+                const targetMs = startMs + (i * 60 * 60 * 1000);
+                let closestPeriod = periods[0];
+                let minDiff = Infinity;
+                periods.forEach(p => {
+                    const pTime = new Date(p.startTime).getTime();
+                    const diff = Math.abs(pTime - targetMs);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestPeriod = p;
+                    }
+                });
+                const hourDiv = document.createElement('div');
+                hourDiv.className = 'wind-hour';
+                
+                const tickTime = new Date(targetMs);
+                let timeStr = tickTime.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+                if (i === 0 || tickTime.getHours() === 0) {
+                    timeStr = tickTime.toLocaleString('en-US', { weekday: 'short', hour: 'numeric', hour12: true });
+                }
+
+                let shortForecast = (closestPeriod.shortForecast || "").toLowerCase();
+                let cloudLabel = "Clear";
+                let cloudIcon = "☀️";
+                
+                if (shortForecast.includes("partly")) {
+                    cloudLabel = "Partly Cloudy";
+                    cloudIcon = "🌤️";
+                } else if (shortForecast.includes("mostly") && shortForecast.includes("cloud")) {
+                    cloudLabel = "Mostly Cloudy";
+                    cloudIcon = "🌥️";
+                } else if (shortForecast.includes("cloud") || shortForecast.includes("overcast")) {
+                    cloudLabel = "Overcast";
+                    cloudIcon = "☁️";
+                } else if (shortForecast.includes("rain") || shortForecast.includes("shower") || shortForecast.includes("storm")) {
+                    cloudLabel = "Rain/Storms";
+                    cloudIcon = "🌧️";
+                } else if (shortForecast.includes("sunny") || shortForecast.includes("clear")) {
+                    cloudLabel = "Clear";
+                    cloudIcon = "☀️";
+                }
+
+                hourDiv.innerHTML = `
+                    <span class="wind-time">${timeStr}</span>
+                    <span class="arrow" style="font-size: 1.5rem; transform: none; margin: 4px 0;">${cloudIcon}</span>
+                    <span class="wind-scale" style="font-size: 0.75rem; color: var(--text-main);">${cloudLabel}</span>
+                `;
+                container.appendChild(hourDiv);
+            }
+        }
+
+        // --- NEW PREDICTIVE SCORING LOGIC MODULE ---
+        function calculateBiteScore(location, telemetry) {
+            let { time_of_day, wind_speed, wind_direction, tide_stage, tide_hour, rainfall_24h, cloud_cover, water_temperature } = telemetry;
+            
+            // Diagnostic array to track specific negative conditions
+            let penalties = [];
+            
+            // Step 1: Global Biological Baseline
+            let Base_Score = 5;
+            
+            // Diel Cycle & Ambient Light Modifiers
+            if (time_of_day === "Dawn" || time_of_day === "Dusk") Base_Score += 3;
+            if (time_of_day === "Night") {
+                if (["Clear", "Partly Cloudy"].includes(cloud_cover)) Base_Score += 1;
+                if (["Mostly Cloudy", "Fully Cloudy", "Overcast"].includes(cloud_cover)) { 
+                    Base_Score -= 1;
+                    penalties.push("Absolute darkness is reducing predator hunting efficiency."); 
+                }
+            }
+            if (time_of_day === "Day") {
+                if (cloud_cover === "Clear") { 
+                    Base_Score -= 2;
+                    penalties.push("Bright midday sun is making fish skittish."); 
+                }
+                if (["Mostly Cloudy", "Fully Cloudy", "Overcast"].includes(cloud_cover)) Base_Score += 1;
+            }
+            
+            // Tidal Velocity Modifiers
+            if (tide_stage === "Slack" || tide_hour === 0 || tide_hour === 6) { 
+                Base_Score -= 3;
+                penalties.push("Dead slack tide has stalled feeding activity."); 
+            }
+            else if (tide_hour === 1 || tide_hour === 5) { 
+                Base_Score -= 1;
+                penalties.push("Low-velocity tidal movement provides poor ambush current."); 
+            }
+            else if (tide_hour === 2) Base_Score += 1;
+            else if (tide_hour === 3 || tide_hour === 4) Base_Score += 3;
+            
+            // Water Temperature Metabolic Scale
+            let wt = parseFloat(water_temperature);
+            if (!isNaN(wt)) {
+                if (wt >= 70.0 && wt <= 85.0) Base_Score += 2;
+                if ((wt >= 60.0 && wt <= 69.9) || (wt >= 85.1 && wt <= 88.0)) { 
+                    Base_Score -= 1;
+                    penalties.push("Sub-optimal water temperatures are inducing metabolic stress."); 
+                }
+                if (wt < 60.0) { 
+                    Base_Score = Math.min(Base_Score, 3);
+                    penalties.push("Extreme cold has triggered thermal torpor."); 
+                }
+                if (wt > 88.1) { 
+                    Base_Score = Math.min(Base_Score, 2);
+                    penalties.push("Extreme heat has depleted dissolved oxygen."); 
+                }
+            }
+            
+            let Location_Score = Base_Score;
+            
+            // Step 2: Location-Specific Modifiers
+            if (location === "gandy") {
+                if (["N", "NE", "E"].includes(wind_direction) && wind_speed > 10) Location_Score += 2;
+                if (["S", "SW", "W"].includes(wind_direction) && wind_speed > 12) { 
+                    Location_Score -= 2;
+                    penalties.push("Strong onshore winds are blowing out the south flats."); 
+                }
+                if (tide_stage === "Outgoing") Location_Score += 1;
+                if (tide_stage === "Incoming") Location_Score += 1;
+                if (rainfall_24h > 1.5) { 
+                    Location_Score -= 2;
+                    penalties.push("Heavy runoff has dropped salinity and muddied the channels."); 
+                }
+            }
+            else if (location === "skyway") {
+                if ([3, 4].includes(tide_hour)) Location_Score += 2;
+                if (wind_speed > 18) { 
+                    Location_Score -= 3;
+                    penalties.push("Extreme winds are destroying lure presentation along the deep pilings.");
+                }
+                if (["W", "SW", "NW"].includes(wind_direction)) Location_Score += 1;
+                if (tide_stage === "Outgoing") Location_Score += 1;
+            }
+            else if (location === "johnspass") {
+                if (tide_stage === "Outgoing") Location_Score += 2;
+                if (["W", "NW", "SW"].includes(wind_direction) && tide_stage === "Incoming") Location_Score += 2;
+                if (wind_speed > 15) { 
+                    Location_Score -= 2;
+                    penalties.push("High winds are creating dangerous, erratic chop in the pass.");
+                }
+            }
+            else if (location === "desotogulf") {
+                if (["W", "SW", "NW"].includes(wind_direction) && wind_speed > 12) { 
+                    Location_Score -= 4;
+                    penalties.push("Onshore winds are muddying the surf and driving loose grass onto the pier.");
+                }
+                if (["E", "NE", "SE"].includes(wind_direction)) Location_Score += 2;
+                if (tide_stage === "Incoming") Location_Score += 1;
+            }
+            else if (location === "desotobay") {
+                if (tide_stage === "Incoming") Location_Score += 2;
+                if (tide_stage === "Outgoing" && [4, 5, 6].includes(tide_hour)) { 
+                    Location_Score -= 2;
+                    penalties.push("Late outgoing tide is draining the adjacent flats."); 
+                }
+                if (["N", "NE"].includes(wind_direction) && wind_speed > 12) { 
+                    Location_Score -= 2;
+                    penalties.push("Offshore winds are aggressively pushing water out of the bay basin.");
+                }
+            }
+            else if (location === "desotobeach") {
+    if (["W", "NW", "SW"].includes(wind_direction) && wind_speed >= 5 && wind_speed <= 18) {
+        Location_Score += 2;  // light-to-moderate onshore = optimal swash trough
+    }
+    if (["W", "NW", "SW"].includes(wind_direction) && wind_speed > 22) {
+        Location_Score -= 3;
+        penalties.push("Excessive onshore wind has blown out the swash channels entirely.");
+    }
+    if (["E", "NE"].includes(wind_direction) && wind_speed > 8) {
+        Location_Score -= 2;
+        penalties.push("Offshore winds exposing beach troughs and dispersing baitfish.");
+    }
+    if (tide_stage === "Incoming") Location_Score += 2;
+}
+            else if (location === "desotoflats") {
+    if (tide_stage === "Incoming") Location_Score += 2;
+    // Outgoing: removed the -1; fish can still concentrate at flat edges
+    if (rainfall_24h > 1.0) {
+        Location_Score -= 3;
+        penalties.push("Recent rainfall has ruined shallow-water visibility.");
+    }
+    if (["S", "SW", "W"].includes(wind_direction) && wind_speed > 12) {
+        Location_Score -= 2;
+        penalties.push("Wind chop stirring up organic bottom sediment.");
+    }
+}
+            else if (location === "honeymoon") {
+    if (["W", "NW", "SW"].includes(wind_direction) && wind_speed >= 5 && wind_speed <= 18) {
+        Location_Score += 2;  // gentle onshore stacks bait in coastal troughs
+    }
+    if (["W", "NW", "SW"].includes(wind_direction) && wind_speed > 22) {
+        Location_Score -= 3;
+        penalties.push("Excessive onshore winds packing troughs with seaweed and turbid water.");
+    }
+    if (["E", "ENE", "ESE"].includes(wind_direction) && wind_speed > 8) {
+        Location_Score -= 2;
+        penalties.push("Offshore winds reducing water depth in beach troughs.");
+    }
+    if (tide_stage === "Incoming") Location_Score += 1;
+}
+            else if (location === "honeymoonbay") {
+                if (tide_stage === "Incoming") Location_Score += 2;
+                if (["N", "NE", "E"].includes(wind_direction) && wind_speed > 12) { 
+                    Location_Score -= 2;
+                    penalties.push("Strong winds are pushing water entirely out of St. Joseph Sound.");
+                }
+                if (tide_stage === "Outgoing") { 
+                    Location_Score -= 2;
+                    penalties.push("Outgoing tide is draining the shallow flats dry."); 
+                }
+            }
+            else if (location === "honeymoonsouth") {
+                if (tide_stage === "Outgoing") Location_Score += 2;
+                if (tide_stage === "Incoming") Location_Score += 1;
+                if (["N", "NW"].includes(wind_direction) && wind_speed > 12) Location_Score += 1;
+            }
+            
+            // Step 3: Synergy and Conflict Edge Cases
+            let Hard_Ceiling = 10;
+            
+            // Edge Case 1: Wind-Against-Current Hydraulic Conflict
+            if ((location === "johnspass" || location === "honeymoonsouth") && 
+                tide_stage === "Outgoing" && ["W", "SW", "NW"].includes(wind_direction) && wind_speed >= 15) {
+                Location_Score -= 4;
+                Hard_Ceiling = 3;
+                penalties.push("Wind-against-tide is creating dangerous, un-fishable standing waves.");
+            }
+            
+            // Edge Case 2: Shallow-Water Hypoxic Solar Conflict
+            if (["desotoflats", "honeymoonbay", "gandy"].includes(location) && 
+                time_of_day === "Day" && cloud_cover === "Clear" && wt > 86.0) {
+                Location_Score -= 3;
+                Hard_Ceiling = 2;
+                penalties.push("High sun and hot water are causing severe hypoxic (low oxygen) conditions.");
+            }
+            
+            // Edge Case 3: Thermal Shallow-Water Refuge Synergy
+            if (["desotoflats", "gandy"].includes(location) && 
+                wt < 64.0 && time_of_day === "Day" && cloud_cover === "Clear") {
+                Location_Score += 3;
+            }
+            
+            // Edge Case 4: Total Hydrodynamic Stagnation
+            if (tide_stage === "Slack" && wind_speed < 5) {
+                let final_stagnation = (time_of_day === "Day" && cloud_cover === "Clear") ? 1 : 2;
+                Location_Score = final_stagnation;
+                Hard_Ceiling = final_stagnation;
+                penalties.push("Total hydrodynamic stagnation (no wind or tide to trigger feeding).");
+            }
+            
+            // Step 4: Floor/Ceiling Bound Mapping
+            let Final_Score = Math.max(1, Math.min(Hard_Ceiling, Math.min(10, Math.round(Location_Score))));
+            
+            // Output Text Generation
+            let coreStr = "";
+            let penaltyStr = "";
+            
+            if (penalties.length > 0) {
+                let uniquePenalties = [...new Set(penalties)];
+                penaltyStr = " <strong>Limiting Factors:</strong> " + uniquePenalties.join(" ") + " ";
+            }
+
+            if (Final_Score >= 9) {
+                coreStr = "Epic Bite Forecast: Optimal convergence of peak tidal velocity, favorable wind orientation, and ideal solar positioning. Predators are highly active along primary ambush vectors. Deploy aggressive search baits immediately.";
+            }
+            else if (Final_Score >= 7) {
+                coreStr = "Productive Window: Strong environmental feeding triggers are active. Target localized current breaks, riprap edges, and high-relief structures. Work soft plastic paddle tails on jig heads or free-lined live bait.";
+            }
+            else if (Final_Score >= 4) {
+                coreStr = `Fair Conditions: Moderate fish activity.${penaltyStr}Constrain your efforts strictly to peak tidal movement hours. Downsize lure profiles and slow down your presentation.`;
+            }
+            else {
+                coreStr = `Poor Conditions: Gamefish are in a negative feeding state.${penaltyStr}Target deep structural holes or outer channel refuges using heavy jigs or scent-infused baits fished dead on the bottom.`;
+            }
+            
+            // Dynamic Telemetry Advice Appends
+            if (wt < 65.0) coreStr += " Cold Water Alert: Target species have low metabolic rates. Baits must be worked with slow, micro-twitch bottom retrieves.";
+            if (wind_speed > 16) coreStr += " High Wind Control: Increase jig head weight or apply weighted soft plastics to maintain direct line tension and counter lateral wind belly drift.";
+            if (rainfall_24h > 1.5) coreStr += " Salinity Drop Warning: Heavy local urban runoff has dirtied the upper-bay surface layer. Shift your focus away from drainage outfalls.";
+            
+            return { score: Final_Score, notes: coreStr };
+        }
+
+        function runForecastingEngine() {
+            const targetTimeMs = activeForecastTimeMs || Date.now();
+
+            // 1. Determine time-specific Wind & Cloud Cover from cache
+            let wSpeed = 0;
+            let wDir = "N";
+            let shortForecast = "";
+
+            if (cachedWindPeriods.length > 0) {
+                let closestPeriod = cachedWindPeriods[0];
+                let minDiff = Infinity;
+                cachedWindPeriods.forEach(p => {
+                    const pTime = new Date(p.startTime).getTime();
+                    const diff = Math.abs(pTime - targetTimeMs);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestPeriod = p;
+                    }
+                });
+                wSpeed = parseInt(closestPeriod.windSpeed.replace(/[^0-9]/g, '')) || 0;
+                wDir = closestPeriod.windDirection;
+                shortForecast = closestPeriod.shortForecast || "";
+            } else {
+                wSpeed = telemetryCache.windSpeed;
+                wDir = telemetryCache.windDirection;
+            }
+
+            // 2. Map Cloud Cover & Diel Cycle
+            let cCover = "Clear";
+            let sfLower = shortForecast.toLowerCase();
+            if (sfLower.includes("partly")) cCover = "Partly Cloudy";
+            else if (sfLower.includes("mostly") && sfLower.includes("cloud")) cCover = "Mostly Cloudy";
+            else if (sfLower.includes("cloud") || sfLower.includes("overcast")) cCover = "Fully Cloudy";
+            else if (sfLower.includes("rain") || sfLower.includes("shower") || sfLower.includes("storm")) cCover = "Fully Cloudy"; 
+            
+            let tDay = getDielCycle(targetTimeMs);
+
+            // 3. Determine time-specific Tide metrics
+            let timeSpecificTideState = "Syncing";
+            let tHour = 0;
+            if (cachedTidePredictions.length > 0) {
+                let currentWaterLevel = null;
+                let futureWaterLevel = null;
+                let minimumTimeDiff = Infinity;
+
+                cachedTidePredictions.forEach(p => {
+                    const tickMs = new Date(p.t.replace(/-/g, "/")).getTime();
+                    const diff = Math.abs(tickMs - targetTimeMs);
+                    if (diff < minimumTimeDiff) {
+                        minimumTimeDiff = diff;
+                        currentWaterLevel = parseFloat(p.v);
+                    }
+                });
+                
+                const targetedFutureMs = targetTimeMs + (90 * 60 * 1000);
+                let futureMinDiff = Infinity;
+                cachedTidePredictions.forEach(p => {
+                    const tickMs = new Date(p.t.replace(/-/g, "/")).getTime();
+                    const diff = Math.abs(tickMs - targetedFutureMs);
+                    if (diff < futureMinDiff) {
+                        futureMinDiff = diff;
+                        futureWaterLevel = parseFloat(p.v);
+                    }
+                });
+                
+                if (currentWaterLevel !== null && futureWaterLevel !== null) {
+                    const heightDelta = futureWaterLevel - currentWaterLevel;
+                    if (Math.abs(heightDelta) < 0.12) timeSpecificTideState = "Slack";
+                    else if (heightDelta > 0) timeSpecificTideState = "Incoming";
+                    else timeSpecificTideState = "Outgoing";
+                }
+
+                // Tide Hour Logic: Locate last extreme point to determine phase hour
+                let pastExtremes = [];
+                for (let i = 1; i < cachedTidePredictions.length - 1; i++) {
+                    let prev = parseFloat(cachedTidePredictions[i-1].v);
+                    let curr = parseFloat(cachedTidePredictions[i].v);
+                    let next = parseFloat(cachedTidePredictions[i+1].v);
+                    if ((curr > prev && curr >= next) || (curr < prev && curr <= next)) {
+                        pastExtremes.push(new Date(cachedTidePredictions[i].t.replace(/-/g, "/")).getTime());
+                    }
+                }
+                let lastExtreme = pastExtremes.filter(t => t <= targetTimeMs).pop();
+                if (lastExtreme) {
+                    let diffHours = (targetTimeMs - lastExtreme) / (1000 * 60 * 60);
+                    tHour = Math.max(0, Math.min(6, Math.round(diffHours)));
+                } else {
+                    tHour = timeSpecificTideState === "Slack" ? 0 : 3;
+                }
+            } else {
+                timeSpecificTideState = currentTideState;
+            }
+
+            const tide = timeSpecificTideState;
+            if (tide === "Syncing") return;
+
+            // 4. Rainfall Fetch
+            let rain24h = cachedRainfall24h;
+
+            const currentWindScale = getWindScaleLabel(wSpeed);
+            const windLabelString = `${wSpeed} mph ${wDir} (${currentWindScale})`;
+
+            const baseTelemetry = {
+                time_of_day: tDay,
+                wind_speed: wSpeed,
+                wind_direction: wDir,
+                tide_stage: tide,
+                tide_hour: tHour,
+                rainfall_24h: rain24h,
+                cloud_cover: cCover
+            };
+
+            const locMap = {
+                'gandy': 'gandy',
+                'skyway': 'skyway',
+                'johnspass': 'johnspass',
+                'desotogulf': 'desotogulf',
+                'desotobay': 'desotobay',
+                'desotobeach': 'desotobeach',
+                'desotoflats': 'desotoflats',
+                'honeymoon': 'honeymoon',
+                'honeymoonbay': 'honeymoonbay',
+                'honeymoonsouth': 'honeymoonsouth'
+            };
+
+            // 5. Evaluate and Render All Profiles
+            for (const [prefix, internalName] of Object.entries(locMap)) {
+                let stationId = locationStations[prefix];
+                let wTemp = telemetryCache.waterTemp[stationId] || "--";
+                let telemetry = { ...baseTelemetry, water_temperature: wTemp };
+                
+                let result = calculateBiteScore(internalName, telemetry);
+                updateDOMCard(prefix, result.score, result.notes, windLabelString, tide);
+            }
+        }
+
+        function updateDOMCard(prefix, score, notes, windStr, tideStr) {
+            const scoreEl = document.getElementById(`${prefix}-score`);
+            const notesEl = document.getElementById(`${prefix}-notes`);
+            const windEl = document.getElementById(`${prefix}-wind`);
+            const tideEl = document.getElementById(`${prefix}-tide`);
+            if (scoreEl) {
+                scoreEl.textContent = score;
+                scoreEl.classList.remove('good', 'fair', 'poor');
+                if (score >= 8) scoreEl.classList.add('good');
+                else if (score >= 5) scoreEl.classList.add('fair');
+                else scoreEl.classList.add('poor');
+            }
+            if (notesEl) {
+                notesEl.innerHTML = notes;
+            }
+            if (windEl) windEl.textContent = windStr;
+            if (tideEl) {
+                tideEl.textContent = tideStr;
+                if (prefix === 'gandy') tideEl.textContent = `${tideStr} Flow Cycle`;
+            }
+        }
+
+        function renderRainfall(properties) {
+            const rainEl = document.getElementById('rain-total');
+            const gaugeBadge = document.getElementById('rain-gauge-badge');
+            const gaugeDesc = document.getElementById('rain-gauge-desc');
+
+            let rainValueMeters = properties.precipitationLast24Hours?.value || 0;
+            let rainInches = parseFloat((rainValueMeters * 39.3701).toFixed(2));
+            if (rainEl) rainEl.textContent = `${rainInches.toFixed(2)}"`;
+            cachedRainfall24h = rainInches;
+
+            const runoff = getRunoffMetrics(rainInches);
+            
+            gaugeBadge.textContent = runoff.label;
+            gaugeBadge.style.backgroundColor = runoff.color;
+            gaugeDesc.textContent = `/ ${runoff.desc}`;
+        }
+
+        // --- SIMPLICITY-FIRST JOURNAL LOG LOGIC ---
+      
+        let selectedLogTimeMs = Date.now();
+
+        function initJournalLog() {
+            const container = document.getElementById('time-pill-scroll');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const { startMs } = getTimelineWindow();
+            const now = new Date();
+            const currentHour = now.getHours();
+            
+            for(let i = 0; i <= 24; i++) {
+                const targetMs = startMs + (i * 60 * 60 * 1000);
+                const tickTime = new Date(targetMs);
+    
+                const pill = document.createElement('div');
+                pill.className = 'time-pill';
+                if (tickTime.getHours() === currentHour && tickTime.getDate() === now.getDate()) {
+                    pill.classList.add('active');
+                    selectedLogTimeMs = targetMs;
+                }
+                
+                let timeStr = tickTime.toLocaleString('en-US', { hour: 'numeric', hour12: true });
+                if (tickTime.getHours() === 0 || i === 0) {
+                    timeStr = tickTime.toLocaleString('en-US', { weekday: 'short', hour: 'numeric', hour12: true });
+                }
+                
+                pill.textContent = timeStr;
+                pill.onclick = () => {
+                    document.querySelectorAll('.time-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    selectedLogTimeMs = targetMs;
+                };
+                container.appendChild(pill);
+            }
+            
+            const activePill = container.querySelector('.active');
+            if (activePill) {
+                container.scrollLeft = activePill.offsetLeft - (container.offsetWidth / 2) + (activePill.offsetWidth / 2);
+            }
+
+            renderHistoryDrawer();
+            setInterval(syncPendingLogs, LOGGING_CONFIG.syncIntervalMs);
+        }
+
+        function toggleHistoryDrawer() {
+            const drawer = document.getElementById('journal-history-drawer');
+            drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function submitLog(rating) {
+            const location = document.getElementById('log-location').value;
+            const logDate = new Date(selectedLogTimeMs);
+            
+            let wSpeed = telemetryCache.windSpeed || 0;
+            let wDir = telemetryCache.windDirection || "N/A";
+            let tPhase = currentTideState || "Slack";
+            let rTotal = document.getElementById('rain-total') ? document.getElementById('rain-total').textContent : "0.00\"";
+            
+            let locPrefix = "gandy";
+            if(location.includes("Skyway")) locPrefix = "skyway";
+            else if(location.includes("John")) locPrefix = "johnspass";
+            else if(location.includes("Gulf Pier")) locPrefix = "desotogulf";
+            else if(location.includes("Bay Pier")) locPrefix = "desotobay";
+            else if(location.includes("North Beach") && location.includes("Soto")) locPrefix = "desotobeach";
+            else if(location.includes("East Flats")) locPrefix = "desotoflats";
+            else if(location.includes("Honeymoon North")) locPrefix = "honeymoon";
+            else if(location.includes("Honeymoon Bay")) locPrefix = "honeymoonbay";
+            else if(location.includes("Honeymoon South")) locPrefix = "honeymoonsouth";
+
+            const scoreEl = document.getElementById(`${locPrefix}-score`);
+    
+            const forecastScore = scoreEl ? scoreEl.textContent : "N/A";
+
+            const payload = {
+                id: Date.now().toString(),
+                timestamp: logDate.toISOString(),
+                hourLabel: logDate.toLocaleString('en-US', { hour: 'numeric', hour12: true }),
+                location: location,
+                rating: rating,
+                forecastScore: forecastScore,
+                wind: `${wSpeed} mph ${wDir}`,
+                tide: tPhase,
+                runoff: rTotal
+            };
+
+            let history = JSON.parse(localStorage.getItem('fishing_logs_history') || '[]');
+            history.unshift(payload);
+            localStorage.setItem('fishing_logs_history', JSON.stringify(history));
+            
+            let pending = JSON.parse(localStorage.getItem('pending_fishing_logs') || '[]');
+            pending.push(payload);
+            localStorage.setItem('pending_fishing_logs', JSON.stringify(pending));
+
+            renderHistoryDrawer();
+            
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = "✅ Saved!";
+            setTimeout(() => btn.textContent = originalText, 1500);
+
+            syncPendingLogs();
+        }
+
+        async function syncPendingLogs() {
+            let pending = JSON.parse(localStorage.getItem('pending_fishing_logs') || '[]');
+            if (pending.length === 0 || LOGGING_CONFIG.googleSheetWebhookUrl === "YOUR_GOOGLE_SHEETS_WEBHOOK_URL_HERE") return;
+
+            const stillPending = [];
+            for (const log of pending) {
+                try {
+                    await fetch(LOGGING_CONFIG.googleSheetWebhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(log)
+                    });
+                } catch (error) {
+                    console.error("Offline sync fallback triggered.");
+                    stillPending.push(log);
+                }
+            }
+            localStorage.setItem('pending_fishing_logs', JSON.stringify(stillPending));
+        }
+
+        function renderHistoryDrawer() {
+            const feed = document.getElementById('history-feed');
+            if(!feed) return;
+            const history = JSON.parse(localStorage.getItem('fishing_logs_history') || '[]');
+            
+            if (history.length === 0) {
+                feed.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No trips logged yet. Select a rating above to start your journal.</p>';
+                return;
+            }
+
+            feed.innerHTML = history.slice(0, 10).map(log => `
+                <div class="history-item">
+                    <div style="font-size:1.5rem;">${log.rating.split(' ')[0]}</div>
+                    <div>
+                        <div style="color:#1a365d; font-weight:600; font-size: 0.95rem;">${log.location}</div>
+                        <div style="color:var(--text-muted); font-size:0.8rem;">${new Date(log.timestamp).toLocaleDateString()} @ ${log.hourLabel} &nbsp;|&nbsp; Actual: <strong>${log.rating.split(' ')[1] || log.rating}</strong></div>
+                    </div>
+                    <div style="text-align:right; font-size:0.75rem; color:var(--text-muted); background: white; padding: 6px; border-radius: 4px; border: 1px solid #edf2f7;">
+                        <span style="font-weight:bold; color:var(--text-main);">FCST: ${log.forecastScore}/10</span><br>
+                        ${log.wind} | ${log.tide}
+                    </div>
+                </div>
+            `).join('');
+
+            const insightEl = document.getElementById('dynamic-insight');
+            if (history.length > 0 && insightEl) {
+                const epics = history.filter(h => h.rating.includes('Epic') || h.rating.includes('Productive'));
+                if (epics.length > 0) {
+                    insightEl.innerHTML = `Pattern tracked: High success at <strong>${epics[0].location}</strong> during <strong>${epics[0].tide}</strong> tide with <strong>${epics[0].wind.split(' ')[2]}</strong> winds.`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
