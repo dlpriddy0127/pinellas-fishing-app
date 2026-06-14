@@ -1277,6 +1277,9 @@ totalInches = parseFloat(Math.min(totalInches, 15.0).toFixed(2));
                     Location_Score -= 2;
                     penalties.push("Heavy runoff has dropped salinity and muddied the channels."); 
                 }
+              // ECR-11: Artificial Light Shadow-Line Bonus
+    // Bridge deck lights attract bait and create a defined shadow line independent of tidal state.
+    if (time_of_day === "Night") Location_Score += 2;
             }
             else if (location === "skyway") {
                 if ([3, 4].includes(tide_hour)) Location_Score += 2;
@@ -1286,6 +1289,9 @@ totalInches = parseFloat(Math.min(totalInches, 15.0).toFixed(2));
                 }
                 if (["W", "SW", "NW"].includes(wind_direction)) Location_Score += 1;
                 if (tide_stage === "Outgoing") Location_Score += 1;
+              // ECR-11: Artificial Light Shadow-Line Bonus
+    // Fender system and deck lights create the shadow ambush line regardless of lunar or tidal conditions.
+    if (time_of_day === "Night") Location_Score += 2;
             }
             else if (location === "johnspass") {
                 if (tide_stage === "Outgoing") Location_Score += 2;
