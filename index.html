@@ -387,7 +387,27 @@
             .success-buttons { justify-content: space-between; flex-wrap: wrap; } 
             .success-btn { flex: 1 1 calc(50% - 8px); }
         }
-    </style>
+    
+        /* ===== Water clarity ===== */
+        .clarity-badge { margin: 10px 0 0; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: inline-block; color: #fff; background: var(--text-muted); }
+        .clarity-badge.clarity-0 { background: #7a4b2a; } .clarity-badge.clarity-1 { background: #a1782c; } .clarity-badge.clarity-2 { background: #6f8f3a; }
+        .clarity-badge.clarity-3 { background: #1f8a8a; } .clarity-badge.clarity-4 { background: #1768b3; }
+        .clarity-badge.clarity-stale, .clarity-pill.clarity-stale { opacity: 0.6; }
+        .clarity-why { display: none; margin-top: 8px; padding: 8px 10px; border-radius: 8px; font-size: 0.8rem; line-height: 1.4; background: var(--bg-color); color: var(--text-muted); }
+        .clarity-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 8px 0; }
+        .clarity-pill { padding: 8px 10px; border-radius: 8px; color: #fff; font-size: 0.82rem; font-weight: 600; display: flex; justify-content: space-between; gap: 6px; background: var(--text-muted); }
+        .clarity-pill.clarity-0 { background: #7a4b2a; } .clarity-pill.clarity-1 { background: #a1782c; } .clarity-pill.clarity-2 { background: #6f8f3a; }
+        .clarity-pill.clarity-3 { background: #1f8a8a; } .clarity-pill.clarity-4 { background: #1768b3; }
+        .clarity-pick { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; }
+        .clarity-pick-label { font-size: 0.85rem; font-weight: 600; margin-right: 4px; }
+        .clarity-btn, .clarity-save { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--text-muted); background: transparent; color: inherit; font-size: 0.8rem; cursor: pointer; }
+        .clarity-btn.active { background: #1768b3; color: #fff; border-color: #1768b3; }
+</style>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a365d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Fishing">
+    <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 
@@ -406,6 +426,7 @@
             <div class="hero-info">
                 <h2>Gandy Causeway Channels</h2>
                 <p class="hero-notes" id="gandy-notes">Analyzing channel current and causeway flow...</p>
+                <div class="clarity-badge" id="gandy-clarity" onclick="toggleClarityWhy('gandy')">💧 Water: --</div><div class="clarity-why" id="gandy-clarity-why"></div>
                 <div class="metrics-grid">
                     <div class="metric"><span>💨</span> <span id="gandy-wind">-- mph</span></div>
                     <div class="metric"><span>🌊</span> <span id="gandy-tide">Tide Syncing...</span></div>
@@ -424,6 +445,7 @@
                     <div class="mini-score fair" id="skyway-score">--</div>
                 </div>
                 <p class="card-notes" id="skyway-notes">Analyzing main channel velocity...</p>
+                <div class="clarity-badge" id="skyway-clarity" onclick="toggleClarityWhy('skyway')">💧 Water: --</div><div class="clarity-why" id="skyway-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="skyway-wind">-- mph</span>
                     <span id="skyway-tide">Syncing</span>
@@ -437,6 +459,7 @@
                     <div class="mini-score fair" id="johnspass-score">--</div>
                 </div>
                 <p class="card-notes" id="johnspass-notes">Analyzing pass flow...</p>
+                <div class="clarity-badge" id="johnspass-clarity" onclick="toggleClarityWhy('johnspass')">💧 Water: --</div><div class="clarity-why" id="johnspass-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="johnspass-wind">-- mph</span>
                     <span id="johnspass-tide">Syncing</span>
@@ -450,6 +473,7 @@
                     <div class="mini-score fair" id="desotogulf-score">--</div>
                 </div>
                 <p class="card-notes" id="desotogulf-notes">Analyzing Gulf flushing...</p>
+                <div class="clarity-badge" id="desotogulf-clarity" onclick="toggleClarityWhy('desotogulf')">💧 Water: --</div><div class="clarity-why" id="desotogulf-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="desotogulf-wind">-- mph</span>
                     <span id="desotogulf-tide">Syncing</span>
@@ -463,6 +487,7 @@
                     <div class="mini-score fair" id="desotobay-score">--</div>
                 </div>
                 <p class="card-notes" id="desotobay-notes">Analyzing bay shore protection...</p>
+                <div class="clarity-badge" id="desotobay-clarity" onclick="toggleClarityWhy('desotobay')">💧 Water: --</div><div class="clarity-why" id="desotobay-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="desotobay-wind">-- mph</span>
                     <span id="desotobay-tide">Syncing</span>
@@ -476,6 +501,7 @@
                     <div class="mini-score fair" id="desotobeach-score">--</div>
                 </div>
                 <p class="card-notes" id="desotobeach-notes">Analyzing surf troughs...</p>
+                <div class="clarity-badge" id="desotobeach-clarity" onclick="toggleClarityWhy('desotobeach')">💧 Water: --</div><div class="clarity-why" id="desotobeach-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="desotobeach-wind">-- mph</span>
                     <span id="desotobeach-tide">Syncing</span>
@@ -489,6 +515,7 @@
                     <div class="mini-score fair" id="desotoflats-score">--</div>
                 </div>
                 <p class="card-notes" id="desotoflats-notes">Analyzing grass flat drains...</p>
+                <div class="clarity-badge" id="desotoflats-clarity" onclick="toggleClarityWhy('desotoflats')">💧 Water: --</div><div class="clarity-why" id="desotoflats-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="desotoflats-wind">-- mph</span>
                     <span id="desotoflats-tide">Syncing</span>
@@ -502,6 +529,7 @@
                     <div class="mini-score fair" id="honeymoon-score">--</div>
                 </div>
                 <p class="card-notes" id="honeymoon-notes">Analyzing surf geometry...</p>
+                <div class="clarity-badge" id="honeymoon-clarity" onclick="toggleClarityWhy('honeymoon')">💧 Water: --</div><div class="clarity-why" id="honeymoon-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="honeymoon-wind">-- mph</span>
                     <span id="honeymoon-tide">Syncing</span>
@@ -515,6 +543,7 @@
                     <div class="mini-score fair" id="honeymoonbay-score">--</div>
                 </div>
                 <p class="card-notes" id="honeymoonbay-notes">Analyzing mangrove flood levels...</p>
+                <div class="clarity-badge" id="honeymoonbay-clarity" onclick="toggleClarityWhy('honeymoonbay')">💧 Water: --</div><div class="clarity-why" id="honeymoonbay-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="honeymoonbay-wind">-- mph</span>
                     <span id="honeymoonbay-tide">Syncing</span>
@@ -528,6 +557,7 @@
                     <div class="mini-score fair" id="honeymoonsouth-score">--</div>
                 </div>
                 <p class="card-notes" id="honeymoonsouth-notes">Analyzing Hurricane Pass currents...</p>
+                <div class="clarity-badge" id="honeymoonsouth-clarity" onclick="toggleClarityWhy('honeymoonsouth')">💧 Water: --</div><div class="clarity-why" id="honeymoonsouth-clarity-why"></div>
                 <div class="card-metrics">
                     <span id="honeymoonsouth-wind">-- mph</span>
                     <span id="honeymoonsouth-tide">Syncing</span>
@@ -543,6 +573,16 @@
             </div>
             
             <div class="time-pill-container" id="time-pill-scroll"></div>
+
+            <div class="clarity-pick" id="clarity-pick">
+                <span class="clarity-pick-label">💧 How's the water?</span>
+                <button class="clarity-btn" data-level="Muddy" onclick="pickClarity('Muddy')">Muddy</button>
+                <button class="clarity-btn" data-level="Murky" onclick="pickClarity('Murky')">Murky</button>
+                <button class="clarity-btn" data-level="Fair" onclick="pickClarity('Fair')">Fair</button>
+                <button class="clarity-btn" data-level="Clear" onclick="pickClarity('Clear')">Clear</button>
+                <button class="clarity-btn" data-level="Crystal" onclick="pickClarity('Crystal')">Crystal</button>
+                <button class="clarity-save" onclick="submitLog('💧 Water report')">Save water report</button>
+            </div>
 
             <div class="action-bar">
                 <select class="location-select" id="log-location">
@@ -586,22 +626,26 @@
 
                 <div class="context-panel">
                     <h3>
-                        🌧️ Past 24h Rainfall & Runoff Guide 
-                        <button class="info-btn" onclick="toggleInfo('runoff-info')" title="Information on Runoff Index">ⓘ</button>
+                        💧 Water Clarity
+                        <button class="info-btn" onclick="toggleInfo('clarity-info')" title="How water clarity is estimated">ⓘ</button>
                     </h3>
-                    
-                    <div id="runoff-info" class="info-panel">
-                        <h4>Runoff Impact Index Matrix</h4>
-                        <p style="margin-bottom: 8px;">Rain totals translate directly into water clarity degradation and rapid salinity drops on shallow flats. The new warning gauge dynamically calculates and interprets raw precipitation figures:</p>
+
+                    <div id="clarity-info" class="info-panel">
+                        <h4>Water Clarity Scale (provisional)</h4>
+                        <p style="margin-bottom: 8px;">Estimated for each spot from recent offshore waves, wind and rain, the latest satellite water-clarity reading, and what is typical for the time of year. Gulf-side spots are called Muddy after big swells and rough weather. Tap a spot's water badge to see the reasoning. Your water reports in the log tune it over time.</p>
                         <ul>
-                            <li><strong>0.00" – 0.10" (Minimal Risk):</strong> Pristine, clear water columns. Stable backcountry salinity.</li>
-                            <li><strong>0.11" – 0.49" (Minor Runoff):</strong> Minimal impact. Temporary localized stain near immediate creek mouth discharges; open grass flats remain optimal.</li>
-                            <li><strong>0.50" – 1.24" (Moderate Runoff):</strong> Stained/tannic water encroachment. Salinity drops force sensitive species (like trout) to abandon shallow bays for deeper drop-offs.</li>
-                            <li><strong>1.25"+ (Severe Runoff):</strong> Churned, brown visibility matrix. Heavy stormwater discharge blocks light penetration. Avoid the inner flats entirely; target high-flushing ocean passes.</li>
+                            <li><strong>Crystal:</strong> Gin clear. Sight-fishing conditions; fish and lures are visible a long way.</li>
+                            <li><strong>Clear:</strong> Clean water. Good visibility; natural presentations work well.</li>
+                            <li><strong>Fair:</strong> Slightly stained. Visible at moderate range; a good all-around condition.</li>
+                            <li><strong>Murky:</strong> Stained or milky. Fish rely more on scent and vibration; bolder baits and lures help.</li>
+                            <li><strong>Muddy:</strong> Churned up or heavily discolored. Visibility is close to nothing; fish scent, noise and structure.</li>
                         </ul>
                     </div>
 
-                    <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <div id="clarity-summary" class="clarity-grid"></div>
+                    <div class="rain-subtext" id="clarity-updated" style="margin-bottom: 24px;">Loading water clarity...</div>
+
+                    <div style="display: none;">
                         <span class="rain-stat" id="rain-total">0.00"</span>
                         <span id="rain-gauge-badge" class="runoff-gauge fair" style="background-color: var(--text-muted);">Syncing</span>
                         <span class="rain-subtext" id="rain-gauge-desc">Connecting to telemetry...</span>
@@ -1703,7 +1747,15 @@ totalInches = parseFloat(Math.min(totalInches, 15.0).toFixed(2));
                 forecastScore: forecastScore,
                 wind: `${wSpeed} mph ${wDir}`,
                 tide: tPhase,
-                runoff: rTotal
+                runoff: rTotal,
+                successRating: rating,
+                windSpeed: String(wSpeed),
+                windDirection: String(wDir),
+                tidePhase: tPhase,
+                runoffIndex: rTotal,
+                clarityRating: selectedClarity || "",
+                modelClarity: (modelClarityFor(locPrefix) || {}).class || "",
+                modelConfidence: (modelClarityFor(locPrefix) || {}).confidence || ""
             };
 
             let history = JSON.parse(localStorage.getItem('fishing_logs_history') || '[]');
@@ -1715,6 +1767,8 @@ totalInches = parseFloat(Math.min(totalInches, 15.0).toFixed(2));
             localStorage.setItem('pending_fishing_logs', JSON.stringify(pending));
 
             renderHistoryDrawer();
+            selectedClarity = '';
+            updateClarityPickUI();
             
             const btn = event.target;
             const originalText = btn.textContent;
@@ -1777,6 +1831,74 @@ totalInches = parseFloat(Math.min(totalInches, 15.0).toFixed(2));
                 }
             }
         }
-    </script>
+    
+        // ===== Water clarity model: reads clarity.json, written every 3 hours by the scheduled GitHub job =====
+        const CLARITY_FALLBACK_URL = "";   // optional: full raw.githubusercontent.com URL of clarity.json, used if the local copy is missing
+        const CLARITY_LABELS = { gandy: "Gandy", skyway: "Skyway", johnspass: "John's Pass", desotogulf: "Gulf Pier", desotobay: "Bay Pier",
+            desotobeach: "North Beach", desotoflats: "East Flats", honeymoon: "Honeymoon N.", honeymoonbay: "Honeymoon Bay", honeymoonsouth: "Honeymoon S." };
+        let clarityData = null;
+        let selectedClarity = '';
+
+        function modelClarityFor(prefix) { return clarityData && clarityData.sites ? clarityData.sites[prefix] : null; }
+
+        async function loadClarity() {
+            for (const base of ['clarity.json', CLARITY_FALLBACK_URL]) {
+                if (!base) continue;
+                try {
+                    const r = await fetch(base + (base.includes('?') ? '&' : '?') + 'ts=' + Date.now(), { cache: 'no-store' });
+                    if (r.ok) { clarityData = await r.json(); break; }
+                } catch (e) { /* try the next source */ }
+            }
+            renderClarity();
+        }
+
+        function renderClarity() {
+            const upd = document.getElementById('clarity-updated');
+            if (!clarityData || !clarityData.sites) { if (upd) upd.textContent = 'Water clarity estimates are unavailable right now.'; return; }
+            const ageH = (Date.now() - Date.parse(clarityData.updated_utc)) / 3600000;
+            const live = clarityData.data && (clarityData.data.buoy_ok || clarityData.data.weather_ok);
+            const stale = !(ageH <= 12) || !live;
+            const grid = document.getElementById('clarity-summary');
+            if (grid) grid.innerHTML = '';
+            for (const prefix of Object.keys(CLARITY_LABELS)) {
+                const s = clarityData.sites[prefix];
+                if (!s) continue;
+                const trend = s.trend_24h === 'improving' ? ' ↗ clearing' : (s.trend_24h === 'worsening' ? ' ↘ worsening' : '');
+                const el = document.getElementById(prefix + '-clarity');
+                if (el) {
+                    el.className = 'clarity-badge clarity-' + s.class_index + (stale ? ' clarity-stale' : '');
+                    el.textContent = '💧 Water: ' + s.class + trend + (s.confidence === 'low' ? ' (low confidence)' : '');
+                }
+                const why = document.getElementById(prefix + '-clarity-why');
+                if (why) {
+                    const parts = [].concat(s.tags || [], s.why || []);
+                    why.textContent = parts.join('. ') + '. Confidence: ' + s.confidence + '. Provisional estimate.';
+                }
+                if (grid) {
+                    const pill = document.createElement('div');
+                    pill.className = 'clarity-pill clarity-' + s.class_index + (stale ? ' clarity-stale' : '');
+                    const a = document.createElement('span'); a.textContent = CLARITY_LABELS[prefix];
+                    const b = document.createElement('span'); b.textContent = s.class;
+                    pill.appendChild(a); pill.appendChild(b); grid.appendChild(pill);
+                }
+            }
+            if (upd) {
+                const when = ageH < 1 ? 'under an hour ago' : (ageH < 48 ? Math.round(ageH) + ' h ago' : Math.round(ageH / 24) + ' days ago');
+                upd.textContent = 'Updated ' + when + '. ' + (stale ? 'Live data is missing or old, so these may show typical conditions only. ' : '') + 'Provisional model.';
+            }
+        }
+
+        function toggleClarityWhy(prefix) {
+            const el = document.getElementById(prefix + '-clarity-why');
+            if (el) el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+        function pickClarity(level) { selectedClarity = (selectedClarity === level) ? '' : level; updateClarityPickUI(); }
+        function updateClarityPickUI() {
+            document.querySelectorAll('.clarity-btn').forEach(b => b.classList.toggle('active', b.dataset.level === selectedClarity));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { loadClarity(); setInterval(loadClarity, 30 * 60 * 1000); });
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {})); }
+</script>
 </body>
 </html>

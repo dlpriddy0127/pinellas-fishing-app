@@ -1,0 +1,178 @@
+{
+ "updated_utc": "2026-10-19T02:19:50Z",
+ "as_of_utc": "2026-10-18T20:00:00Z",
+ "model_version": "0.1",
+ "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
+ "data": {
+  "buoy_ok": false,
+  "buoy_latest_utc": null,
+  "weather_ok": false,
+  "satellite_ok": false,
+  "satellite_latest": null,
+  "marine_forecast_ok": false,
+  "errors": []
+ },
+ "sites": {
+  "gandy": {
+   "site_id": "gandy",
+   "name": "Gandy Bridge (St. Pete)",
+   "class": "Muddy",
+   "class_index": 0,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Muddy this time of year",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 1.282,
+   "stirring_percentile": 0
+  },
+  "skyway": {
+   "site_id": "skyway_pier",
+   "name": "Skyway Fishing Pier (north)",
+   "class": "Fair",
+   "class_index": 2,
+   "confidence": "low",
+   "tags": [
+    "Tide: rising"
+   ],
+   "why": [
+    "Typical for Fair this time of year",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.737,
+   "stirring_percentile": 0
+  },
+  "johnspass": {
+   "site_id": "johns_pass",
+   "name": "John's Pass",
+   "class": "Clear",
+   "class_index": 3,
+   "confidence": "low",
+   "tags": [
+    "Tide: rising"
+   ],
+   "why": [
+    "Typical for Fair this time of year",
+    "Recent waves/wind/rain push it clearer (log Kd -0.29)",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.502,
+   "stirring_percentile": 0
+  },
+  "desotogulf": {
+   "site_id": "desoto_gulf_pier",
+   "name": "DeSoto Gulf Pier",
+   "class": "Clear",
+   "class_index": 3,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Fair this time of year",
+    "Recent waves/wind/rain push it clearer (log Kd -0.52)",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.499,
+   "stirring_percentile": 0
+  },
+  "desotobay": {
+   "site_id": "desoto_bay_pier",
+   "name": "DeSoto Bay Pier",
+   "class": "Clear",
+   "class_index": 3,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Fair this time of year",
+    "Recent waves/wind/rain push it clearer (log Kd -0.52)",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.499,
+   "stirring_percentile": 0
+  },
+  "desotobeach": {
+   "site_id": "desoto_north_beach",
+   "name": "DeSoto North Beach",
+   "class": "Fair",
+   "class_index": 2,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Fair this time of year",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.863,
+   "stirring_percentile": 0
+  },
+  "desotoflats": {
+   "site_id": "desoto_east_flats",
+   "name": "DeSoto East Beach flats",
+   "class": "Clear",
+   "class_index": 3,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Fair this time of year",
+    "Recent waves/wind/rain push it clearer (log Kd -0.54)",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.43,
+   "stirring_percentile": 0
+  },
+  "honeymoon": {
+   "site_id": "honeymoon_north",
+   "name": "Honeymoon Island north beach",
+   "class": "Clear",
+   "class_index": 3,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Murky this time of year",
+    "Recent waves/wind/rain push it clearer (log Kd -0.73)",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.489,
+   "stirring_percentile": 0
+  },
+  "honeymoonbay": {
+   "site_id": "honeymoon_bay_flats",
+   "name": "Honeymoon Island bay flats",
+   "class": "Clear",
+   "class_index": 3,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Murky this time of year",
+    "Recent waves/wind/rain push it clearer (log Kd -0.73)",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.489,
+   "stirring_percentile": 0
+  },
+  "honeymoonsouth": {
+   "site_id": "honeymoon_south",
+   "name": "Honeymoon Island south side",
+   "class": "Clear",
+   "class_index": 3,
+   "confidence": "low",
+   "tags": [],
+   "why": [
+    "Typical for Murky this time of year",
+    "Recent waves/wind/rain push it clearer (log Kd -0.73)",
+    "Wave data from the buoy is patchy"
+   ],
+   "trend_24h": "holding",
+   "kd490": 0.489,
+   "stirring_percentile": 0
+  }
+ }
+}
