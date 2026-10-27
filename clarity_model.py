@@ -105,7 +105,8 @@ def adjustment(params, site, as_of, waves, rain, wind):
          "rain": _ewm(rain, as_of, params["weather"]["tau_rain_h"]),
          "wind": _ewm(wind, as_of, params["weather"]["tau_wind_h"])}
     adj = site["intercept"] + sum(site["coef"][k] * (f[k] - site["feat_mean"][k]) / site["feat_sd"][k] for k in f)
-    return adj if site["adjust_used"] else 0.0, fast, slow, cover
+    # no weather adjustment when buoy wave data is patchy: missing waves would otherwise read as calm water and push the estimate clearer
+    return (adj if site["adjust_used"] and cover >= 0.6 else 0.0), fast, slow, cover
 
 
 def _carry(params, age_days):
