@@ -1,5 +1,5 @@
 {
- "updated_utc": "2026-10-27T02:21:58Z",
+ "updated_utc": "2026-10-27T02:36:25Z",
  "as_of_utc": "2026-10-27T02:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
@@ -127,7 +127,7 @@
     "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "holding",
-   "kd490": 0.919,
+   "kd490": 0.92,
    "stirring_percentile": 88
   },
   "honeymoon": {
@@ -139,11 +139,11 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.24)",
+    "Recent waves/wind/rain push it murkier (log Kd +0.23)",
     "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "holding",
-   "kd490": 1.121,
+   "kd490": 1.11,
    "stirring_percentile": 88
   },
   "honeymoonbay": {
@@ -155,11 +155,11 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.24)",
+    "Recent waves/wind/rain push it murkier (log Kd +0.23)",
     "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "holding",
-   "kd490": 1.121,
+   "kd490": 1.11,
    "stirring_percentile": 88
   },
   "honeymoonsouth": {
@@ -171,11 +171,11 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.24)",
+    "Recent waves/wind/rain push it murkier (log Kd +0.23)",
     "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "holding",
-   "kd490": 1.121,
+   "kd490": 1.11,
    "stirring_percentile": 88
   }
  }
