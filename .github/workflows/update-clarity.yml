@@ -1,0 +1,36 @@
+name: Update water clarity
+
+on:
+  schedule:
+    - cron: '17 */3 * * *'     # every 3 hours
+  workflow_dispatch:           # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clarity
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch data and run the model
+        run: python update_clarity.py
+      - name: Save the result
+        run: |
+          git config user.name "clarity-bot"
+          git config user.email "clarity-bot@users.noreply.github.com"
+          git add clarity.json
+          git add nrt_log.csv 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No change to save"
+          else
+            git commit -m "Update water clarity $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
