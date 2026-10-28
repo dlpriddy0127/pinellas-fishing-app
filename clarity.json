@@ -1,11 +1,11 @@
 {
- "updated_utc": "2026-10-28T13:15:16Z",
- "as_of_utc": "2026-10-28T13:00:00Z",
+ "updated_utc": "2026-10-28T20:28:18Z",
+ "as_of_utc": "2026-10-28T20:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-10-28T12:00:00Z",
+  "buoy_latest_utc": "2026-10-28T20:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
@@ -39,7 +39,7 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: rising"
+    "Tide: falling"
    ],
    "why": [
     "Typical for Fair this time of year"
@@ -55,14 +55,14 @@
    "class_index": 1,
    "confidence": "low",
    "tags": [
-    "Tide: rising"
+    "Tide: falling"
    ],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.44)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.43)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.065,
+   "kd490": 1.061,
    "stirring_percentile": 88
   },
   "desotogulf": {
@@ -74,10 +74,10 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.39)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.40)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.266,
+   "kd490": 1.276,
    "stirring_percentile": 88
   },
   "desotobay": {
@@ -89,10 +89,10 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.39)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.40)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.266,
+   "kd490": 1.276,
    "stirring_percentile": 88
   },
   "desotobeach": {
@@ -109,7 +109,7 @@
     "Rough-day rule: wave stirring is in the top 12% -> no better than Murky"
    ],
    "trend_24h": "holding",
-   "kd490": 0.896,
+   "kd490": 0.897,
    "stirring_percentile": 88
   },
   "desotoflats": {
@@ -124,52 +124,52 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.29)"
    ],
    "trend_24h": "improving",
-   "kd490": 0.994,
+   "kd490": 0.998,
    "stirring_percentile": 88
   },
   "honeymoon": {
    "site_id": "honeymoon_north",
    "name": "Honeymoon Island north beach",
-   "class": "Muddy",
-   "class_index": 0,
+   "class": "Murky",
+   "class_index": 1,
    "confidence": "low",
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.19)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.14)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.259,
+   "kd490": 1.192,
    "stirring_percentile": 88
   },
   "honeymoonbay": {
    "site_id": "honeymoon_bay_flats",
    "name": "Honeymoon Island bay flats",
-   "class": "Muddy",
-   "class_index": 0,
+   "class": "Murky",
+   "class_index": 1,
    "confidence": "low",
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.19)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.14)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.259,
+   "kd490": 1.192,
    "stirring_percentile": 88
   },
   "honeymoonsouth": {
    "site_id": "honeymoon_south",
    "name": "Honeymoon Island south side",
-   "class": "Muddy",
-   "class_index": 0,
+   "class": "Murky",
+   "class_index": 1,
    "confidence": "low",
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.19)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.14)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.259,
+   "kd490": 1.192,
    "stirring_percentile": 88
   }
  }
