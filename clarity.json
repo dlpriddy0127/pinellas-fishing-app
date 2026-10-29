@@ -1,21 +1,17 @@
 {
- "updated_utc": "2026-10-29T01:03:12Z",
- "as_of_utc": "2026-10-29T01:00:00Z",
+ "updated_utc": "2026-10-29T10:09:01Z",
+ "as_of_utc": "2026-10-29T10:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-10-29T00:00:00Z",
+  "buoy_latest_utc": "2026-10-29T09:00:00Z",
   "weather_ok": true,
-  "satellite_ok": false,
-  "satellite_latest": null,
+  "satellite_ok": true,
+  "satellite_latest": "2026-10-27",
   "marine_forecast_ok": true,
-  "errors": [
-   "satellite nesdisVHNkd490Daily_Lon0360: https://coastwatch.pfeg.noaa.gov/erddap/info/nesdisVHNkd490Daily_Lon0360/index.c... failed: HTTP Error 403: ",
-   "satellite nesdisVHNkd490Daily: https://coastwatch.pfeg.noaa.gov/erddap/info/nesdisVHNkd490Daily/index.csv... failed: HTTP Error 403: ",
-   "satellite noaacwNPPVIIRSkd490Daily: https://coastwatch.noaa.gov/erddap/griddap/noaacwNPPVIIRSkd490Daily.csv?kd_490[(... failed: HTTP Error 404: Not Found"
-  ],
-  "satellite_source": null
+  "errors": [],
+  "satellite_source": "nesdisVHNkd490Daily_Lon0360"
  },
  "sites": {
   "gandy": {
@@ -23,77 +19,84 @@
    "name": "Gandy Bridge (St. Pete)",
    "class": "Muddy",
    "class_index": 0,
-   "confidence": "low",
+   "confidence": "medium",
    "tags": [],
    "why": [
-    "Typical for Muddy this time of year"
+    "Typical for Muddy this time of year",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "holding",
-   "kd490": 1.294,
-   "stirring_percentile": 87
+   "kd490": 1.314,
+   "stirring_percentile": 86
   },
   "skyway": {
    "site_id": "skyway_pier",
    "name": "Skyway Fishing Pier (north)",
    "class": "Fair",
    "class_index": 2,
-   "confidence": "low",
+   "confidence": "medium",
    "tags": [
-    "Tide: rising"
+    "Tide: falling"
    ],
    "why": [
-    "Typical for Fair this time of year"
+    "Typical for Fair this time of year",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "holding",
-   "kd490": 0.733,
-   "stirring_percentile": 87
+   "kd490": 0.88,
+   "stirring_percentile": 86
   },
   "johnspass": {
    "site_id": "johns_pass",
    "name": "John's Pass",
    "class": "Murky",
    "class_index": 1,
-   "confidence": "low",
+   "confidence": "medium",
    "tags": [
-    "Tide: rising"
+    "Rough water",
+    "Tide: falling"
    ],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.39)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.37)",
+    "Satellite reading 2 day(s) old carries 40% of its surprise",
+    "Rough-day rule: wave stirring is in the top 14% -> no better than Murky"
    ],
    "trend_24h": "improving",
-   "kd490": 1.014,
-   "stirring_percentile": 87
+   "kd490": 0.913,
+   "stirring_percentile": 86
   },
   "desotogulf": {
    "site_id": "desoto_gulf_pier",
    "name": "DeSoto Gulf Pier",
-   "class": "Muddy",
-   "class_index": 0,
-   "confidence": "low",
+   "class": "Murky",
+   "class_index": 1,
+   "confidence": "high",
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.36)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.34)",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "improving",
-   "kd490": 1.234,
-   "stirring_percentile": 87
+   "kd490": 1.138,
+   "stirring_percentile": 86
   },
   "desotobay": {
    "site_id": "desoto_bay_pier",
    "name": "DeSoto Bay Pier",
-   "class": "Muddy",
-   "class_index": 0,
-   "confidence": "low",
+   "class": "Murky",
+   "class_index": 1,
+   "confidence": "high",
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.36)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.34)",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "improving",
-   "kd490": 1.234,
-   "stirring_percentile": 87
+   "kd490": 1.138,
+   "stirring_percentile": 86
   },
   "desotobeach": {
    "site_id": "desoto_north_beach",
@@ -101,76 +104,78 @@
    "class": "Murky",
    "class_index": 1,
    "confidence": "medium",
-   "tags": [
-    "Rough water"
-   ],
+   "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Rough-day rule: wave stirring is in the top 13% -> no better than Murky"
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
-   "trend_24h": "improving",
-   "kd490": 0.898,
-   "stirring_percentile": 87
+   "trend_24h": "holding",
+   "kd490": 1.013,
+   "stirring_percentile": 86
   },
   "desotoflats": {
    "site_id": "desoto_east_flats",
    "name": "DeSoto East Beach flats",
    "class": "Murky",
    "class_index": 1,
-   "confidence": "low",
+   "confidence": "high",
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.27)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.27)",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
    "trend_24h": "improving",
-   "kd490": 0.979,
-   "stirring_percentile": 87
+   "kd490": 1.042,
+   "stirring_percentile": 86
   },
   "honeymoon": {
    "site_id": "honeymoon_north",
    "name": "Honeymoon Island north beach",
    "class": "Murky",
    "class_index": 1,
-   "confidence": "low",
+   "confidence": "high",
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.11)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.11)",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
-   "trend_24h": "holding",
-   "kd490": 1.162,
-   "stirring_percentile": 87
+   "trend_24h": "improving",
+   "kd490": 1.111,
+   "stirring_percentile": 86
   },
   "honeymoonbay": {
    "site_id": "honeymoon_bay_flats",
    "name": "Honeymoon Island bay flats",
    "class": "Murky",
    "class_index": 1,
-   "confidence": "low",
+   "confidence": "high",
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.11)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.11)",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
-   "trend_24h": "holding",
-   "kd490": 1.162,
-   "stirring_percentile": 87
+   "trend_24h": "improving",
+   "kd490": 1.111,
+   "stirring_percentile": 86
   },
   "honeymoonsouth": {
    "site_id": "honeymoon_south",
    "name": "Honeymoon Island south side",
    "class": "Murky",
    "class_index": 1,
-   "confidence": "low",
+   "confidence": "high",
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.11)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.11)",
+    "Satellite reading 2 day(s) old carries 40% of its surprise"
    ],
-   "trend_24h": "holding",
-   "kd490": 1.162,
-   "stirring_percentile": 87
+   "trend_24h": "improving",
+   "kd490": 1.111,
+   "stirring_percentile": 86
   }
  }
 }
