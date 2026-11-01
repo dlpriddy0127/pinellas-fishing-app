@@ -1,17 +1,21 @@
 {
- "updated_utc": "2026-11-01T16:06:37Z",
- "as_of_utc": "2026-11-01T16:00:00Z",
+ "updated_utc": "2026-11-01T22:10:25Z",
+ "as_of_utc": "2026-11-01T22:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-01T15:00:00Z",
+  "buoy_latest_utc": "2026-11-01T21:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
   "marine_forecast_ok": true,
-  "errors": [],
-  "satellite_source": "nesdisVHNkd490Daily_Lon0360"
+  "errors": [
+   "satellite nesdisVHNkd490Daily_Lon0360: https://coastwatch.pfeg.noaa.gov/erddap/info/nesdisVHNkd490Daily_Lon0360/index.c... failed: HTTP Error 403: ",
+   "satellite nesdisVHNkd490Daily: https://coastwatch.pfeg.noaa.gov/erddap/info/nesdisVHNkd490Daily/index.csv... failed: HTTP Error 403: ",
+   "satellite noaacwNPPVIIRSkd490Daily: https://coastwatch.noaa.gov/erddap/griddap/noaacwNPPVIIRSkd490Daily.csv?kd_490[(... failed: HTTP Error 404: Not Found"
+  ],
+  "satellite_source": null
  },
  "sites": {
   "gandy": {
@@ -35,13 +39,13 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
     "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.733,
+   "kd490": 0.732,
    "stirring_percentile": 53
   },
   "johnspass": {
@@ -51,14 +55,14 @@
    "class_index": 3,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it clearer (log Kd -0.22)"
+    "Recent waves/wind/rain push it clearer (log Kd -0.09)"
    ],
    "trend_24h": "worsening",
-   "kd490": 0.557,
+   "kd490": 0.632,
    "stirring_percentile": 53
   },
   "desotogulf": {
@@ -69,11 +73,10 @@
    "confidence": "low",
    "tags": [],
    "why": [
-    "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it clearer (log Kd -0.08)"
+    "Typical for Fair this time of year"
    ],
-   "trend_24h": "worsening",
-   "kd490": 0.797,
+   "trend_24h": "holding",
+   "kd490": 0.868,
    "stirring_percentile": 53
   },
   "desotobay": {
@@ -84,11 +87,10 @@
    "confidence": "low",
    "tags": [],
    "why": [
-    "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it clearer (log Kd -0.08)"
+    "Typical for Fair this time of year"
    ],
-   "trend_24h": "worsening",
-   "kd490": 0.797,
+   "trend_24h": "holding",
+   "kd490": 0.868,
    "stirring_percentile": 53
   },
   "desotobeach": {
@@ -102,7 +104,7 @@
     "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.907,
+   "kd490": 0.908,
    "stirring_percentile": 53
   },
   "desotoflats": {
@@ -114,10 +116,10 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.06)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.09)"
    ],
    "trend_24h": "holding",
-   "kd490": 0.794,
+   "kd490": 0.815,
    "stirring_percentile": 53
   },
   "honeymoon": {
@@ -129,10 +131,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it clearer (log Kd -0.17)"
+    "Recent waves/wind/rain push it clearer (log Kd -0.14)"
    ],
-   "trend_24h": "holding",
-   "kd490": 0.881,
+   "trend_24h": "improving",
+   "kd490": 0.906,
    "stirring_percentile": 53
   },
   "honeymoonbay": {
@@ -144,10 +146,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it clearer (log Kd -0.17)"
+    "Recent waves/wind/rain push it clearer (log Kd -0.14)"
    ],
-   "trend_24h": "holding",
-   "kd490": 0.881,
+   "trend_24h": "improving",
+   "kd490": 0.906,
    "stirring_percentile": 53
   },
   "honeymoonsouth": {
@@ -159,10 +161,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it clearer (log Kd -0.17)"
+    "Recent waves/wind/rain push it clearer (log Kd -0.14)"
    ],
-   "trend_24h": "holding",
-   "kd490": 0.881,
+   "trend_24h": "improving",
+   "kd490": 0.906,
    "stirring_percentile": 53
   }
  }
