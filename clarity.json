@@ -1,11 +1,11 @@
 {
- "updated_utc": "2026-11-03T02:56:53Z",
- "as_of_utc": "2026-11-03T02:00:00Z",
+ "updated_utc": "2026-11-03T10:59:56Z",
+ "as_of_utc": "2026-11-03T10:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-03T02:00:00Z",
+  "buoy_latest_utc": "2026-11-03T10:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
@@ -25,8 +25,8 @@
     "Typical for Muddy this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 1.298,
-   "stirring_percentile": 53
+   "kd490": 1.299,
+   "stirring_percentile": 47
   },
   "skyway": {
    "site_id": "skyway_pier",
@@ -35,14 +35,14 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
     "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
    "kd490": 0.732,
-   "stirring_percentile": 53
+   "stirring_percentile": 47
   },
   "johnspass": {
    "site_id": "johns_pass",
@@ -51,45 +51,42 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
-    "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.10)"
+    "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.766,
-   "stirring_percentile": 53
+   "kd490": 0.7,
+   "stirring_percentile": 47
   },
   "desotogulf": {
    "site_id": "desoto_gulf_pier",
    "name": "DeSoto Gulf Pier",
-   "class": "Murky",
-   "class_index": 1,
+   "class": "Fair",
+   "class_index": 2,
    "confidence": "low",
    "tags": [],
    "why": [
-    "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.12)"
+    "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.974,
-   "stirring_percentile": 53
+   "kd490": 0.907,
+   "stirring_percentile": 47
   },
   "desotobay": {
    "site_id": "desoto_bay_pier",
    "name": "DeSoto Bay Pier",
-   "class": "Murky",
-   "class_index": 1,
+   "class": "Fair",
+   "class_index": 2,
    "confidence": "low",
    "tags": [],
    "why": [
-    "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.12)"
+    "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.974,
-   "stirring_percentile": 53
+   "kd490": 0.907,
+   "stirring_percentile": 47
   },
   "desotobeach": {
    "site_id": "desoto_north_beach",
@@ -102,8 +99,8 @@
     "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.912,
-   "stirring_percentile": 53
+   "kd490": 0.913,
+   "stirring_percentile": 47
   },
   "desotoflats": {
    "site_id": "desoto_east_flats",
@@ -114,11 +111,11 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.14)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.10)"
    ],
    "trend_24h": "holding",
-   "kd490": 0.854,
-   "stirring_percentile": 53
+   "kd490": 0.827,
+   "stirring_percentile": 47
   },
   "honeymoon": {
    "site_id": "honeymoon_north",
@@ -130,9 +127,9 @@
    "why": [
     "Typical for Murky this time of year"
    ],
-   "trend_24h": "holding",
-   "kd490": 1.046,
-   "stirring_percentile": 53
+   "trend_24h": "improving",
+   "kd490": 1.006,
+   "stirring_percentile": 47
   },
   "honeymoonbay": {
    "site_id": "honeymoon_bay_flats",
@@ -144,9 +141,9 @@
    "why": [
     "Typical for Murky this time of year"
    ],
-   "trend_24h": "holding",
-   "kd490": 1.046,
-   "stirring_percentile": 53
+   "trend_24h": "improving",
+   "kd490": 1.006,
+   "stirring_percentile": 47
   },
   "honeymoonsouth": {
    "site_id": "honeymoon_south",
@@ -158,9 +155,9 @@
    "why": [
     "Typical for Murky this time of year"
    ],
-   "trend_24h": "holding",
-   "kd490": 1.046,
-   "stirring_percentile": 53
+   "trend_24h": "improving",
+   "kd490": 1.006,
+   "stirring_percentile": 47
   }
  }
 }
