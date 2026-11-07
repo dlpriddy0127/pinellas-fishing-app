@@ -1,11 +1,11 @@
 {
- "updated_utc": "2026-11-07T17:46:02Z",
- "as_of_utc": "2026-11-07T17:00:00Z",
+ "updated_utc": "2026-11-07T21:58:22Z",
+ "as_of_utc": "2026-11-07T21:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-07T17:00:00Z",
+  "buoy_latest_utc": "2026-11-07T21:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
@@ -27,7 +27,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 1.304,
-   "stirring_percentile": 11
+   "stirring_percentile": 15
   },
   "skyway": {
    "site_id": "skyway_pier",
@@ -36,7 +36,7 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
     "Typical for Fair this time of year",
@@ -44,7 +44,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 0.73,
-   "stirring_percentile": 11
+   "stirring_percentile": 15
   },
   "johnspass": {
    "site_id": "johns_pass",
@@ -53,7 +53,7 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
     "Typical for Fair this time of year",
@@ -61,7 +61,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 0.701,
-   "stirring_percentile": 11
+   "stirring_percentile": 15
   },
   "desotogulf": {
    "site_id": "desoto_gulf_pier",
@@ -75,8 +75,8 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 0.875,
-   "stirring_percentile": 11
+   "kd490": 0.876,
+   "stirring_percentile": 15
   },
   "desotobay": {
    "site_id": "desoto_bay_pier",
@@ -90,8 +90,8 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 0.875,
-   "stirring_percentile": 11
+   "kd490": 0.876,
+   "stirring_percentile": 15
   },
   "desotobeach": {
    "site_id": "desoto_north_beach",
@@ -105,8 +105,8 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 0.928,
-   "stirring_percentile": 11
+   "kd490": 0.929,
+   "stirring_percentile": 15
   },
   "desotoflats": {
    "site_id": "desoto_east_flats",
@@ -121,7 +121,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 0.747,
-   "stirring_percentile": 11
+   "stirring_percentile": 15
   },
   "honeymoon": {
    "site_id": "honeymoon_north",
@@ -136,7 +136,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 1.059,
-   "stirring_percentile": 11
+   "stirring_percentile": 15
   },
   "honeymoonbay": {
    "site_id": "honeymoon_bay_flats",
@@ -151,7 +151,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 1.059,
-   "stirring_percentile": 11
+   "stirring_percentile": 15
   },
   "honeymoonsouth": {
    "site_id": "honeymoon_south",
@@ -166,7 +166,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 1.059,
-   "stirring_percentile": 11
+   "stirring_percentile": 15
   }
  }
 }
