@@ -1,11 +1,11 @@
 {
- "updated_utc": "2026-11-07T10:24:23Z",
- "as_of_utc": "2026-11-07T10:00:00Z",
+ "updated_utc": "2026-11-07T17:46:02Z",
+ "as_of_utc": "2026-11-07T17:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-07T10:00:00Z",
+  "buoy_latest_utc": "2026-11-07T17:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
@@ -26,7 +26,7 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 1.303,
+   "kd490": 1.304,
    "stirring_percentile": 11
   },
   "skyway": {
@@ -36,14 +36,14 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: rising"
+    "Tide: falling"
    ],
    "why": [
     "Typical for Fair this time of year",
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 0.731,
+   "kd490": 0.73,
    "stirring_percentile": 11
   },
   "johnspass": {
@@ -53,7 +53,7 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: rising"
+    "Tide: falling"
    ],
    "why": [
     "Typical for Fair this time of year",
@@ -105,7 +105,7 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 0.927,
+   "kd490": 0.928,
    "stirring_percentile": 11
   },
   "desotoflats": {
@@ -135,7 +135,7 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 1.058,
+   "kd490": 1.059,
    "stirring_percentile": 11
   },
   "honeymoonbay": {
@@ -150,7 +150,7 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 1.058,
+   "kd490": 1.059,
    "stirring_percentile": 11
   },
   "honeymoonsouth": {
@@ -165,7 +165,7 @@
     "Wave data from the buoy is patchy"
    ],
    "trend_24h": "holding",
-   "kd490": 1.058,
+   "kd490": 1.059,
    "stirring_percentile": 11
   }
  }
