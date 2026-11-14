@@ -1,19 +1,19 @@
 {
- "updated_utc": "2026-11-14T18:15:28Z",
- "as_of_utc": "2026-11-14T18:00:00Z",
+ "updated_utc": "2026-11-14T22:38:11Z",
+ "as_of_utc": "2026-11-14T22:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-14T17:00:00Z",
+  "buoy_latest_utc": "2026-11-14T22:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
   "marine_forecast_ok": true,
   "errors": [
-   "satellite nesdisVHNkd490Daily_Lon0360: https://coastwatch.pfeg.noaa.gov/erddap/info/nesdisVHNkd490Daily_Lon0360/index.c... failed: HTTP Error 403: ",
-   "satellite nesdisVHNkd490Daily: https://coastwatch.pfeg.noaa.gov/erddap/info/nesdisVHNkd490Daily/index.csv... failed: HTTP Error 403: ",
-   "satellite noaacwNPPVIIRSkd490Daily: https://coastwatch.noaa.gov/erddap/griddap/noaacwNPPVIIRSkd490Daily.csv?kd_490[(... failed: HTTP Error 404: Not Found"
+   "satellite nesdisVHNkd490Daily_Lon0360: https://coastwatch.pfeg.noaa.gov/erddap/griddap/nesdisVHNkd490Daily_Lon0360.csv?... failed: HTTP Error 404: ",
+   "satellite nesdisVHNkd490Daily: https://coastwatch.pfeg.noaa.gov/erddap/griddap/nesdisVHNkd490Daily.csv?kd_490[(... failed: HTTP Error 502: Proxy Error",
+   "satellite noaacwNPPVIIRSkd490Daily: https://coastwatch.noaa.gov/erddap/info/noaacwNPPVIIRSkd490Daily/index.csv... failed: HTTP Error 502: Proxy Error"
   ],
   "satellite_source": null
  },
@@ -30,7 +30,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 1.312,
-   "stirring_percentile": 76
+   "stirring_percentile": 78
   },
   "skyway": {
    "site_id": "skyway_pier",
@@ -46,7 +46,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 0.728,
-   "stirring_percentile": 76
+   "stirring_percentile": 78
   },
   "johnspass": {
    "site_id": "johns_pass",
@@ -62,8 +62,8 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.61)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.317,
-   "stirring_percentile": 76
+   "kd490": 1.305,
+   "stirring_percentile": 78
   },
   "desotogulf": {
    "site_id": "desoto_gulf_pier",
@@ -78,7 +78,7 @@
    ],
    "trend_24h": "improving",
    "kd490": 1.348,
-   "stirring_percentile": 76
+   "stirring_percentile": 78
   },
   "desotobay": {
    "site_id": "desoto_bay_pier",
@@ -93,7 +93,7 @@
    ],
    "trend_24h": "improving",
    "kd490": 1.348,
-   "stirring_percentile": 76
+   "stirring_percentile": 78
   },
   "desotobeach": {
    "site_id": "desoto_north_beach",
@@ -106,8 +106,8 @@
     "Typical for Murky this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.954,
-   "stirring_percentile": 76
+   "kd490": 0.955,
+   "stirring_percentile": 78
   },
   "desotoflats": {
    "site_id": "desoto_east_flats",
@@ -121,8 +121,8 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.21)"
    ],
    "trend_24h": "improving",
-   "kd490": 0.922,
-   "stirring_percentile": 76
+   "kd490": 0.926,
+   "stirring_percentile": 78
   },
   "honeymoon": {
    "site_id": "honeymoon_north",
@@ -136,8 +136,8 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.06)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.138,
-   "stirring_percentile": 76
+   "kd490": 1.147,
+   "stirring_percentile": 78
   },
   "honeymoonbay": {
    "site_id": "honeymoon_bay_flats",
@@ -151,8 +151,8 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.06)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.138,
-   "stirring_percentile": 76
+   "kd490": 1.147,
+   "stirring_percentile": 78
   },
   "honeymoonsouth": {
    "site_id": "honeymoon_south",
@@ -166,8 +166,8 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.06)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.138,
-   "stirring_percentile": 76
+   "kd490": 1.147,
+   "stirring_percentile": 78
   }
  }
 }
