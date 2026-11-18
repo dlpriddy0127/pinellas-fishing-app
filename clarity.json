@@ -1,21 +1,17 @@
 {
- "updated_utc": "2026-11-18T11:55:45Z",
- "as_of_utc": "2026-11-18T11:00:00Z",
+ "updated_utc": "2026-11-18T20:40:19Z",
+ "as_of_utc": "2026-11-18T20:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-18T10:00:00Z",
+  "buoy_latest_utc": "2026-11-18T20:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
   "marine_forecast_ok": true,
-  "errors": [
-   "satellite nesdisVHNkd490Daily_Lon0360: https://coastwatch.pfeg.noaa.gov/erddap/info/nesdisVHNkd490Daily_Lon0360/index.c... failed: HTTP Error 404: ",
-   "satellite nesdisVHNkd490Daily: https://coastwatch.pfeg.noaa.gov/erddap/griddap/nesdisVHNkd490Daily.csv?kd_490[(... failed: HTTP Error 404: Not Found",
-   "satellite noaacwNPPVIIRSkd490Daily: https://coastwatch.noaa.gov/erddap/griddap/noaacwNPPVIIRSkd490Daily.csv?kd_490[(... failed: HTTP Error 404: Not Found"
-  ],
-  "satellite_source": null
+  "errors": [],
+  "satellite_source": "nesdisVHNkd490Daily_Lon0360"
  },
  "sites": {
   "gandy": {
@@ -39,13 +35,13 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
     "Typical for Fair this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.724,
+   "kd490": 0.723,
    "stirring_percentile": 74
   },
   "johnspass": {
@@ -55,14 +51,14 @@
    "class_index": 1,
    "confidence": "low",
    "tags": [
-    "Tide: falling"
+    "Tide: rising"
    ],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.37)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.34)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.041,
+   "kd490": 1.002,
    "stirring_percentile": 74
   },
   "desotogulf": {
@@ -74,10 +70,10 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.35)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.32)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.275,
+   "kd490": 1.246,
    "stirring_percentile": 74
   },
   "desotobay": {
@@ -89,10 +85,10 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.35)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.32)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.275,
+   "kd490": 1.246,
    "stirring_percentile": 74
   },
   "desotobeach": {
@@ -106,7 +102,7 @@
     "Typical for Murky this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.969,
+   "kd490": 0.971,
    "stirring_percentile": 74
   },
   "desotoflats": {
@@ -118,10 +114,10 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.29)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.28)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.004,
+   "kd490": 0.988,
    "stirring_percentile": 74
   },
   "honeymoon": {
@@ -133,10 +129,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.25)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.22)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.398,
+   "kd490": 1.35,
    "stirring_percentile": 74
   },
   "honeymoonbay": {
@@ -148,10 +144,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.25)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.22)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.398,
+   "kd490": 1.35,
    "stirring_percentile": 74
   },
   "honeymoonsouth": {
@@ -163,10 +159,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.25)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.22)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.398,
+   "kd490": 1.35,
    "stirring_percentile": 74
   }
  }
