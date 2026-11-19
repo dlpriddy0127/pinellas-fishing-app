@@ -1,16 +1,18 @@
 {
- "updated_utc": "2026-11-18T20:40:19Z",
- "as_of_utc": "2026-11-18T20:00:00Z",
+ "updated_utc": "2026-11-19T02:42:55Z",
+ "as_of_utc": "2026-11-19T02:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-18T20:00:00Z",
+  "buoy_latest_utc": "2026-11-19T02:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
   "marine_forecast_ok": true,
-  "errors": [],
+  "errors": [
+   "weather gandy: https://api.open-meteo.com/v1/forecast?latitude=27.8764&longitude=-82.5923&hourl... failed: <urlopen error _ssl.c:1001: The handshake operation timed out>"
+  ],
   "satellite_source": "nesdisVHNkd490Daily_Lon0360"
  },
  "sites": {
@@ -35,7 +37,7 @@
    "class_index": 2,
    "confidence": "low",
    "tags": [
-    "Tide: rising"
+    "Tide: falling"
    ],
    "why": [
     "Typical for Fair this time of year"
@@ -51,14 +53,14 @@
    "class_index": 1,
    "confidence": "low",
    "tags": [
-    "Tide: rising"
+    "Tide: falling"
    ],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.34)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.35)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.002,
+   "kd490": 1.016,
    "stirring_percentile": 74
   },
   "desotogulf": {
@@ -73,7 +75,7 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.32)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.246,
+   "kd490": 1.241,
    "stirring_percentile": 74
   },
   "desotobay": {
@@ -88,7 +90,7 @@
     "Recent waves/wind/rain push it murkier (log Kd +0.32)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.246,
+   "kd490": 1.241,
    "stirring_percentile": 74
   },
   "desotobeach": {
@@ -102,7 +104,7 @@
     "Typical for Murky this time of year"
    ],
    "trend_24h": "holding",
-   "kd490": 0.971,
+   "kd490": 0.972,
    "stirring_percentile": 74
   },
   "desotoflats": {
@@ -114,10 +116,10 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.28)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.26)"
    ],
    "trend_24h": "improving",
-   "kd490": 0.988,
+   "kd490": 0.974,
    "stirring_percentile": 74
   },
   "honeymoon": {
@@ -129,10 +131,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.22)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.20)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.35,
+   "kd490": 1.32,
    "stirring_percentile": 74
   },
   "honeymoonbay": {
@@ -144,10 +146,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.22)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.20)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.35,
+   "kd490": 1.32,
    "stirring_percentile": 74
   },
   "honeymoonsouth": {
@@ -159,10 +161,10 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.22)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.20)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.35,
+   "kd490": 1.32,
    "stirring_percentile": 74
   }
  }
