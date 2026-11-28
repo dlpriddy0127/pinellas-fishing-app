@@ -1,11 +1,11 @@
 {
- "updated_utc": "2026-11-27T23:33:11Z",
- "as_of_utc": "2026-11-27T23:00:00Z",
+ "updated_utc": "2026-11-28T08:01:39Z",
+ "as_of_utc": "2026-11-28T07:00:00Z",
  "model_version": "0.1",
  "status": "PROVISIONAL: thresholds and class cut-offs are uncalibrated against fishing-spot observations",
  "data": {
   "buoy_ok": true,
-  "buoy_latest_utc": "2026-11-27T23:00:00Z",
+  "buoy_latest_utc": "2026-11-28T07:00:00Z",
   "weather_ok": true,
   "satellite_ok": false,
   "satellite_latest": null,
@@ -30,7 +30,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 1.312,
-   "stirring_percentile": 96
+   "stirring_percentile": 95
   },
   "skyway": {
    "site_id": "skyway_pier",
@@ -46,7 +46,7 @@
    ],
    "trend_24h": "holding",
    "kd490": 0.712,
-   "stirring_percentile": 96
+   "stirring_percentile": 95
   },
   "johnspass": {
    "site_id": "johns_pass",
@@ -60,12 +60,12 @@
    ],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.79)",
-    "Storm rule: wave stirring is in the top 4% of the 3-year record -> Muddy"
+    "Recent waves/wind/rain push it murkier (log Kd +0.76)",
+    "Storm rule: wave stirring is in the top 5% of the 3-year record -> Muddy"
    ],
    "trend_24h": "improving",
-   "kd490": 1.602,
-   "stirring_percentile": 96
+   "kd490": 1.552,
+   "stirring_percentile": 95
   },
   "desotogulf": {
    "site_id": "desoto_gulf_pier",
@@ -78,12 +78,12 @@
    ],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.57)",
-    "Storm rule: wave stirring is in the top 4% of the 3-year record -> Muddy"
+    "Recent waves/wind/rain push it murkier (log Kd +0.52)",
+    "Storm rule: wave stirring is in the top 5% of the 3-year record -> Muddy"
    ],
    "trend_24h": "improving",
-   "kd490": 1.641,
-   "stirring_percentile": 96
+   "kd490": 1.568,
+   "stirring_percentile": 95
   },
   "desotobay": {
    "site_id": "desoto_bay_pier",
@@ -94,11 +94,11 @@
    "tags": [],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.57)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.52)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.641,
-   "stirring_percentile": 96
+   "kd490": 1.568,
+   "stirring_percentile": 95
   },
   "desotobeach": {
    "site_id": "desoto_north_beach",
@@ -111,11 +111,11 @@
    ],
    "why": [
     "Typical for Murky this time of year",
-    "Storm rule: wave stirring is in the top 4% of the 3-year record -> Muddy"
+    "Storm rule: wave stirring is in the top 5% of the 3-year record -> Muddy"
    ],
    "trend_24h": "holding",
-   "kd490": 1.011,
-   "stirring_percentile": 96
+   "kd490": 1.012,
+   "stirring_percentile": 95
   },
   "desotoflats": {
    "site_id": "desoto_east_flats",
@@ -126,11 +126,11 @@
    "tags": [],
    "why": [
     "Typical for Fair this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.34)"
+    "Recent waves/wind/rain push it murkier (log Kd +0.31)"
    ],
    "trend_24h": "improving",
-   "kd490": 1.049,
-   "stirring_percentile": 96
+   "kd490": 1.018,
+   "stirring_percentile": 95
   },
   "honeymoon": {
    "site_id": "honeymoon_north",
@@ -143,27 +143,25 @@
    ],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.10)",
-    "Storm rule: wave stirring is in the top 4% of the 3-year record -> Muddy"
+    "Storm rule: wave stirring is in the top 5% of the 3-year record -> Muddy"
    ],
    "trend_24h": "improving",
-   "kd490": 1.224,
-   "stirring_percentile": 96
+   "kd490": 1.106,
+   "stirring_percentile": 95
   },
   "honeymoonbay": {
    "site_id": "honeymoon_bay_flats",
    "name": "Honeymoon Island bay flats",
-   "class": "Muddy",
-   "class_index": 0,
+   "class": "Murky",
+   "class_index": 1,
    "confidence": "low",
    "tags": [],
    "why": [
-    "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.10)"
+    "Typical for Murky this time of year"
    ],
    "trend_24h": "improving",
-   "kd490": 1.224,
-   "stirring_percentile": 96
+   "kd490": 1.106,
+   "stirring_percentile": 95
   },
   "honeymoonsouth": {
    "site_id": "honeymoon_south",
@@ -176,12 +174,11 @@
    ],
    "why": [
     "Typical for Murky this time of year",
-    "Recent waves/wind/rain push it murkier (log Kd +0.10)",
-    "Storm rule: wave stirring is in the top 4% of the 3-year record -> Muddy"
+    "Storm rule: wave stirring is in the top 5% of the 3-year record -> Muddy"
    ],
    "trend_24h": "improving",
-   "kd490": 1.224,
-   "stirring_percentile": 96
+   "kd490": 1.106,
+   "stirring_percentile": 95
   }
  }
 }
